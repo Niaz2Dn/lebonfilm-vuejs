@@ -28,7 +28,7 @@
             </v-btn>
         </v-app-bar>
         <v-footer absolute padless class="font-weight-medium" color="white">
-            <v-col class="text-center grey--text" cols="12"><strong>&copy; 2020 Master STL #PC3R</strong>Project by Mohamed Nizamuddin & Skander Sersi</v-col>
+            <v-col class="text-center grey--text" cols="12"><strong>&copy; 2020 Master STL #PC3R </strong>Project by Mohamed Nizamuddin & Skander Sersi</v-col>
         </v-footer>
     </div>
 </template>

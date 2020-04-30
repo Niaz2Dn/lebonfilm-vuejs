@@ -1,10 +1,8 @@
 <template>
     <div class="home">
-        <div class="featuredM">
-            <MovieCarousel v-bind:movies="featured"/>
-        </div>
-        <div class="popularM ma-4">
-            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">Popular Movies</div>
+        <MovieCarousel v-bind:movies="featured"/>
+        <div class="ma-4">
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">Trending Movies</div>
             <MovieGrid v-bind:movies="popularMovies"/>
         </div>
     </div>
@@ -33,19 +31,16 @@ export default {
                     element['poster_url'] = this.imageURL + element.poster_path
                 });
                 for (let i = 0; i < 5; i++) {
-                let item = this.popularMovies[Math.floor(Math.random() * this.popularMovies.length)];
-                console.log(item)
-
-                if (!this.featured.includes(item)) {
-                    this.featured.push(item);
+                    let item = this.popularMovies[Math.floor(Math.random() * this.popularMovies.length)];
+                    if (!this.featured.includes(item)) {
+                        this.featured.push(item);
+                    }
                 }
-              }
             })
             .catch(err => {console.log(err)})
     },
     data() {
         return {
-            pageTitle: "Popular Movies",
             featured: [],
             popularMovies: [],
             trendingMoviesURL: "https://lebonfilm.herokuapp.com/getTrendingMovies",

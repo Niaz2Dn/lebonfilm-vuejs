@@ -2,11 +2,11 @@
     <v-layout class="ma-8" justify-start row wrap>
         <v-flex xs6 sm4 md3 lg2 v-for="(movie, i) in movies" :key="i">
             <router-link class="ml-2 pb-8 titre" :title="(movie.title || movie.original_title)" :to="{ name: 'Movie', params: { id: movie.id } }">
-                <v-card raised width="187" color="transparent">
+                <v-card class="mb-2" raised width="187" color="grey lighten-2" image>
                     <v-img class="carte" v-if="movie.poster_url" :src="movie.poster_url" height="275" cover></v-img>
                     <v-img class="carte" v-if="!movie.poster_url" src="@/assets/poster404.jpg" height="275" cover></v-img>
                 </v-card>
-                <div class="mt-2">{{ (movie.title || movie.original_title) }}</div>
+                <span>{{ (movie.title || movie.original_title) }}</span>
           </router-link>
         </v-flex>
       </v-layout>
@@ -29,12 +29,12 @@ export default {
         color: #03a9f4;
     }
     .titre {
+        color: black;
         width: 163px;
         display: block;
+        text-decoration: none;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        text-decoration: none;
-        color: black;
     }
 </style>
