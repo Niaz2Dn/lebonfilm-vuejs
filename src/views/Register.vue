@@ -1,5 +1,149 @@
 <template>
-    <div class="register">
-        <h1>This is an Register page</h1>
-    </div>
+    <v-container :style="{ backgroundImage: 'url(' + backgroundImage + ')' }" class="background-img" fluid fill-height>
+        <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md4>
+                <v-card raised>
+                    <v-card-title class="justify-center">
+                        <img class="ma-8" width="300" src="@/assets/logo.png" />
+                    </v-card-title>
+                    <v-toolbar color="light-blue" dark flat>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-title class="headline font-weight-black">Sign up for an account</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                    </v-toolbar>
+                    <v-card-text>
+                        <v-form>
+                            <v-text-field color="black" ref="username" v-model="form['username']" label="Username" type="text" :rules="[rules.required]"></v-text-field>
+                            <v-text-field color="black" ref="password" v-model="form['password']" label="Password" type="password" :rules="[rules.required]"></v-text-field>
+                            <v-text-field color="black" ref="lastname" v-model="form['lastname']" label="Lastname" type="text" :rules="[rules.required]"></v-text-field>
+                            <v-text-field color="black" ref="firstname" v-model="form['firstname']" label="Firstname" type="text" :rules="[rules.required]"></v-text-field>
+                            <v-text-field color="black" ref="email" v-model="form['email']" label="Email" type="text" :rules="[rules.required, rules.email]"></v-text-field>
+                        </v-form>
+                        <div class="mb-4">
+                            <v-alert dense v-if="error" text color="error">{{ errorMessage }}</v-alert>
+                            <v-alert dense v-if="success" text color="success">{{ successMessage }}</v-alert>
+                        </div>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <router-link class="sign-in-btn ma-4" :to="{name: 'Login'}">Login</router-link>
+                        <v-btn @click="register" color="light-blue" class="mr-4 white--text">
+                            <div class="font-weight-black subtitle-1">Sign up</div>
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
+
+<script>
+import axios from "axios";
+
+export default {
+    data: function() {
+        return {
+            backgroundImage: "",
+            backgroundImages: [],
+            form: {},
+            errorMessage: "",
+            error: false,
+            successMessage: "",
+            success: false,
+            rules: {
+                required: value => !!value || "Required.",
+                email: value => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return pattern.test(value) || "Invalid e-mail.";
+                }
+            },
+            newUserURL: "https://lebonfilm.herokuapp.com/newUser",
+            isConnectedURL: "https://lebonfilm.herokuapp.com/isConnected"
+        };
+    },
+    mounted() {
+        const key = process.env.VUE_APP_TMDB_API_KEY
+        if (localStorage.backgroundImages) {
+            this.backgroundImages = JSON.parse(localStorage.backgroundImages)
+            let i = Math.floor(Math.random() * this.backgroundImages.length)
+            this.backgroundImage = this.backgroundImages[i]
+        } else {
+            axios
+                .get("https://api.themoviedb.org/3/trending/movie/week?api_key=" + key)
+                .then(res => {
+                    res.data.results.forEach(element => {
+                        this.backgroundImages.push("http://image.tmdb.org/t/p/original" + element["backdrop_path"])
+                });
+                let i = Math.floor(Math.random() * this.backgroundImages.length)
+                this.backgroundImage = this.backgroundImages[i]
+                })
+                .catch(err => console.log(err));
+        }
+    },
+    watch: {
+        backgroundImages(newBackgroundImages) {
+            localStorage.backgroundImages = JSON.stringify(newBackgroundImages);
+        }
+    },
+    methods: {
+        register() {
+            this.error = false;
+            this.errorMessage = "";
+            this.success = false;
+            this.successMessage = "";
+            if (this.form["username"] || this.form["password"] || this.form["lastname"] || this.form["firstname"] || this.form["email"]) {
+                this.$refs["username"].validate(true);
+                this.$refs["password"].validate(true);
+                this.$refs["lastname"].validate(true);
+                this.$refs["firstname"].validate(true);
+                this.$refs["email"].validate(true);
+            } else {
+
+                // axios
+                // .post(
+                //     this.newUserURL, 
+                //     {
+                //         username: this.form["username"],
+                //         password: this.form["password"],
+                //         lastname: this.form["lastname"],
+                //         firstname: this.form["firstname"],
+                //         email: this.form["email"]
+                //     }
+                // )
+                // .then(res => {
+                //     if (res.data.status_code === 2) {
+                //         this.success = true;
+                //         this.successMessage = res.data.status_message;
+                //         setTimeout(() => this.$router.push("/login"), 3000);
+                //     } else {
+                //         this.error = true;
+                //         this.errorMessage = res.data.status_message;
+                //     }
+                // })
+                // .catch(err => console.log(err));
+                console.log("register");
+            }
+            setTimeout(() => {this.error = false;}, 6000);
+        }
+    }
+};
+</script>
+
+<style scoped>
+.background-img {
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: inset 0 0 0 50vw rgb(0, 0, 0, 0.2);
+}
+.sign-in-btn {
+    text-decoration: none;
+    display: block;
+    color: #03a9f4;
+}
+.sign-in-btn:hover {
+    text-decoration: underline;
+    color: #03a9f4;
+}
+</style>

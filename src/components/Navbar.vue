@@ -1,39 +1,36 @@
 <template>
-  <div v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
-    <v-app-bar app color="white">
-      <span class="pt-4 pb-2">
-        <img width="130" src="@/assets/logo.png"/>
-      </span>
-      <v-spacer></v-spacer>
-      <div v-if="this.$route.name === 'Home'">
-        <v-toolbar-title class="ma-2 font-weight-medium title grey--text text--darken-1">Home</v-toolbar-title>
-      </div>
-      <div v-else>
-        <v-toolbar-title class="ma-2 font-weight-medium subtitle-1 grey--text">
-            <router-link class="rt" :to="{name: 'Home'}">Home</router-link>
-        </v-toolbar-title>
-      </div>
-      <div v-if="this.$route.name === 'Profile'">
-        <v-toolbar-title class="ma-2 font-weight-medium title grey--text text--darken-1">{{ username }}</v-toolbar-title>
-      </div>
-      <div v-else>
-        <v-toolbar-title class="ma-2 font-weight-medium subtitle-1 grey--text">
-          <router-link class="rt" :to="{name: 'Profile', params: { username: this.username }}">{{ username }}</router-link>
-        </v-toolbar-title>
-      </div>
-      <v-spacer></v-spacer>
-      <div class="search">
-        <v-text-field class="mr-2 mt-4" ref="searchTitle" v-model="searchTitle" v-on:keyup.enter="search" prepend-icon="mdi-magnify" placeholder="Search" color="light-blue" dense>
-        </v-text-field>
-      </div>
-      <v-btn icon @click="logout" color="light-blue">
-        <v-icon>mdi-exit-to-app</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-footer absolute padless class="font-weight-medium" color="white">
-      <v-col class="text-center grey--text" cols="12"><strong>&copy; 2020 Master STL #PC3R</strong>Project by Mohamed Nizamuddin & Skander Sersi</v-col>
-    </v-footer>
-  </div>
+    <div v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
+        <v-app-bar app flat color="white">
+            <span class="pt-4 pb-2">
+                <img width="130" src="@/assets/logo.png"/>
+            </span>
+            <v-spacer></v-spacer>
+            <div v-if="this.$route.name === 'Home'">
+                <v-toolbar-title class="uline ma-2 font-weight-medium subtitle-1">Home</v-toolbar-title>
+            </div>
+            <div v-else>
+                <v-toolbar-title class="ma-2 font-weight-medium subtitle-1">
+                    <router-link class="rt" :to="{name: 'Home'}">Home</router-link>
+                </v-toolbar-title>
+            </div>
+            <div v-if="this.$route.name === 'Profile'">
+                <v-toolbar-title class="uline ma-2 font-weight-medium subtitle-1">{{ username }}</v-toolbar-title>
+            </div>
+            <div v-else>
+                <v-toolbar-title class="ma-2 font-weight-medium subtitle-1">
+                <router-link class="rt" :to="{name: 'Profile', params: { username: this.username }}">{{ username }}</router-link>
+                </v-toolbar-title>
+            </div>
+            <v-spacer></v-spacer>
+            <v-text-field class="search-bar mt-6 mr-2" prepend-icon="mdi-magnify" placeholder="Find movies..." dense outlined single-line flat ref="searchTitle" v-model="searchTitle" v-on:keyup.enter="search" color="light-blue"></v-text-field>
+            <v-btn large icon @click="searchbar" color="grey">
+                <v-icon>mdi-exit-to-app</v-icon>
+            </v-btn>
+        </v-app-bar>
+        <v-footer absolute padless class="font-weight-medium" color="white">
+            <v-col class="text-center grey--text" cols="12"><strong>&copy; 2020 Master STL #PC3R</strong>Project by Mohamed Nizamuddin & Skander Sersi</v-col>
+        </v-footer>
+    </div>
 </template>
 
 <script>
@@ -54,14 +51,14 @@ export default {
     },
     methods: {
         search() {
-            if ( this.searchTitle !== null && this.searchTitle !== "" && this.searchTitle !== this.$route.params.name) {
+            if ( this.searchTitle && this.searchTitle !== this.$route.params.name) {
                 this.$router.push({
                     path: "/search/" + this.searchTitle
                 });
             }
         },
         isConnected() {
-            this.interval = setInterval(() => {
+            setInterval(() => {
                 // axios
                 //     .get(this.isConnectedURL)
                 //     .then(res => {
@@ -97,13 +94,16 @@ export default {
 .rt {
     text-decoration: none;
     display: block;
-    color: #9e9e9e;
+    color: black;
 }
 .rt:hover {
-    text-decoration: underline;
-    color: #9e9e9e;
+    text-decoration: none;
+    color: #03a9f4;
 }
-.search {
-    min-width: 100px;
+.search-bar {
+    width: 20px;
+}
+.uline {
+  box-shadow: inset 0 -3px 0 0 #03a9f4;
 }
 </style>
