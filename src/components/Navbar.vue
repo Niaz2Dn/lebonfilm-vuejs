@@ -1,5 +1,5 @@
 <template>
-    <div v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
+    <div class="nav" v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
         <v-app-bar app flat color="white">
             <span class="pt-4 pb-2">
                 <img width="130" src="@/assets/logo.png"/>
@@ -23,7 +23,7 @@
             </div>
             <v-spacer></v-spacer>
             <v-text-field class="search-bar mt-6 mr-2" prepend-icon="mdi-magnify" placeholder="Find movies..." dense outlined single-line flat ref="searchTitle" v-model="searchTitle" v-on:keyup.enter="search" color="light-blue"></v-text-field>
-            <v-btn large icon @click="searchbar" color="grey">
+            <v-btn large icon @click="logout" color="grey">
                 <v-icon>mdi-exit-to-app</v-icon>
             </v-btn>
         </v-app-bar>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+// import axios from "axios"
 
 export default {
     data() {
@@ -104,6 +104,6 @@ export default {
     width: 20px;
 }
 .uline {
-  box-shadow: inset 0 -3px 0 0 #03a9f4;
+    box-shadow: inset 0 -3px 0 0 #03a9f4;
 }
 </style>
