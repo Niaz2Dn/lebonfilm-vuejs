@@ -1,6 +1,6 @@
 <template>
-    <div class="nav" v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
-        <v-app-bar app flat color="white">
+    <div class="nav">
+        <v-app-bar app color="white" v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
             <span class="pt-4 pb-2">
                 <img width="130" src="@/assets/logo.png"/>
             </span>
@@ -27,7 +27,7 @@
                 <v-icon>mdi-exit-to-app</v-icon>
             </v-btn>
         </v-app-bar>
-        <v-footer absolute padless class="font-weight-medium" color="white">
+        <v-footer absolute padless class="font-weight-medium" color="transparent">
             <v-col class="text-center grey--text" cols="12"><strong>&copy; 2020 Master STL #PC3R </strong>Project by Mohamed Nizamuddin & Skander Sersi</v-col>
         </v-footer>
     </div>

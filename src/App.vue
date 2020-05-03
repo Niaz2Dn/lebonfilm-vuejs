@@ -20,11 +20,9 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
-
 #app {
     font-family: "Roboto", sans-serif;
 }
-
 * {
     text-transform: none !important;
 }

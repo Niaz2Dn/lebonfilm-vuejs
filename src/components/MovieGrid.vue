@@ -10,7 +10,13 @@
                             </v-row>
                         </template>
                     </v-img>
-                    <v-img class="carte" v-if="!movie.poster_url" src="@/assets/poster404.jpg" height="275" cover></v-img>
+                    <v-img class="carte" v-if="!movie.poster_url" src="@/assets/poster404.jpg" height="275" cover>
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="white"></v-progress-circular>
+                            </v-row>
+                        </template>
+                    </v-img>
                 </v-card>
                 <span>{{ (movie.title || movie.original_title) }}</span>
           </router-link>
@@ -27,20 +33,16 @@ export default {
 </script>
 
 <style scoped>
-    .carte {
-        border-radius: 2%;
-    }
-
-    .titre:hover {
-        color: #03a9f4;
-    }
-    .titre {
-        color: black;
-        width: 163px;
-        display: block;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+.titre:hover {
+    color: #03a9f4;
+}
+.titre {
+    color: black;
+    width: 163px;
+    display: block;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 </style>

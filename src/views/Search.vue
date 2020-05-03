@@ -6,7 +6,7 @@
                 <span v-else>Search Results:</span>
             </div>
             <MovieGrid v-bind:movies="searchResults"/>
-            <v-btn v-if="!noData && this.page != this.totalPages" @click="loadMore" block color="light-blue" class="white--text mb-8 pb-8">
+            <v-btn v-if="!noData && this.page != this.totalPages" @click="loadMore" block color="light-blue" class="white--text mb-8">
                 <div class="font-weight-black subtitle-1">Load more</div>
             </v-btn>
         </div>
@@ -110,16 +110,16 @@ export default {
 </script>
 
 <style scoped>
-    .titre:hover {
-        color: #03a9f4;
-    }
-    .titre {
-        color: black;
-        width: 163px;
-        display: block;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+.titre:hover {
+    color: #03a9f4;
+}
+.titre {
+    color: black;
+    width: 163px;
+    display: block;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 </style>

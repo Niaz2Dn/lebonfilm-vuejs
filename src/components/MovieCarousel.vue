@@ -37,8 +37,8 @@ export default {
 </script>
 
 <style scoped>
-    .rt {
-        text-decoration: none;
-        display: block;
-    }
+.rt {
+    text-decoration: none;
+    display: block;
+}
 </style>

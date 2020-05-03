@@ -1,5 +1,5 @@
 <template>
-    <v-container :style="{ backgroundImage: 'url(' + backgroundImage + ')' }" class="background-img" fluid fill-height>
+    <v-container :style="{ backgroundImage: 'url(' + require(backgroundImage) + ')' }" class="background-img" fluid fill-height>
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
                 <v-card raised>
@@ -38,13 +38,12 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 export default {
     data: function() {
         return {
-            backgroundImage: "",
-            backgroundImages: [],
+            backgroundImage: "@/assets/landingRegister.jpg",
             form: {},
             errorMessage: "",
             error: false,
@@ -57,33 +56,8 @@ export default {
                     return pattern.test(value) || "Invalid e-mail.";
                 }
             },
-            newUserURL: "https://lebonfilm.herokuapp.com/newUser",
-            isConnectedURL: "https://lebonfilm.herokuapp.com/isConnected"
+            newUserUrl: "https://lebonfilm.herokuapp.com/newUser"
         };
-    },
-    mounted() {
-        const key = process.env.VUE_APP_TMDB_API_KEY
-        if (localStorage.backgroundImages) {
-            this.backgroundImages = JSON.parse(localStorage.backgroundImages)
-            let i = Math.floor(Math.random() * this.backgroundImages.length)
-            this.backgroundImage = this.backgroundImages[i]
-        } else {
-            axios
-                .get("https://api.themoviedb.org/3/trending/movie/week?api_key=" + key)
-                .then(res => {
-                    res.data.results.forEach(element => {
-                        this.backgroundImages.push("http://image.tmdb.org/t/p/original" + element["backdrop_path"])
-                });
-                let i = Math.floor(Math.random() * this.backgroundImages.length)
-                this.backgroundImage = this.backgroundImages[i]
-                })
-                .catch(err => console.log(err));
-        }
-    },
-    watch: {
-        backgroundImages(newBackgroundImages) {
-            localStorage.backgroundImages = JSON.stringify(newBackgroundImages);
-        }
     },
     methods: {
         register() {
@@ -98,10 +72,9 @@ export default {
                 this.$refs["firstname"].validate(true);
                 this.$refs["email"].validate(true);
             } else {
-
                 // axios
                 // .post(
-                //     this.newUserURL, 
+                //     this.newUserUrl, 
                 //     {
                 //         username: this.form["username"],
                 //         password: this.form["password"],
@@ -135,7 +108,6 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    box-shadow: inset 0 0 0 50vw rgb(0, 0, 0, 0.2);
 }
 .sign-in-btn {
     text-decoration: none;
