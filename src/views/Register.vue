@@ -1,5 +1,5 @@
 <template>
-    <v-container :style="{ backgroundImage: 'url(' + require(backgroundImage) + ')' }" class="background-img" fluid fill-height>
+    <v-container :style="{ backgroundImage: 'url(' + require('@/assets/landingRegister.jpg') + ')' }" class="background-img" fluid fill-height>
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
                 <v-card raised>
@@ -43,7 +43,6 @@
 export default {
     data: function() {
         return {
-            backgroundImage: "@/assets/landingRegister.jpg",
             form: {},
             errorMessage: "",
             error: false,
