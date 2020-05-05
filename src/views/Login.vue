@@ -75,7 +75,7 @@ export default {
                         this.errorMessage = res.data.error_message;
                     }
                 })
-                .catch((err) => {
+                .catch(err => {
                     console.log(err.response.body);
                 })
             }
