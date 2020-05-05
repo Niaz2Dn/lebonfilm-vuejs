@@ -72,7 +72,13 @@ export default {
                 this.$refs["firstname"].validate(true);
                 this.$refs["email"].validate(true);
             } else {
-                axios
+                axios(
+                    {
+                        method: 'POST',
+                        url: this.newUserUrl,
+                        headers: {'Content-Type': 'applicaion/json'}
+                    }
+                )
                 .post(
                     this.newUserUrl, 
                     {
