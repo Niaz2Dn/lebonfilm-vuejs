@@ -34,16 +34,15 @@
 </template>
 
 <script>
-// import axios from "axios"
+import axios from "axios"
 
 export default {
     data() {
         return {
-            username: "Bob3",
+            username: "",
             searchTitle: "",
-            imageURL: "http://image.tmdb.org/t/p/w500",
-            isConnectedURL: "https://lebonfilm.herokuapp.com/isConnected",
-            logoutURL: "https://lebonfilm.herokuapp.com/logout"
+            isConnectedUrl: "https://lebonfilm-prod.herokuapp.com/isConnected",
+            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout"
         };
     },
     mounted() {
@@ -59,32 +58,32 @@ export default {
         },
         isConnected() {
             setInterval(() => {
-                // axios
-                //     .get(this.isConnectedURL)
-                //     .then(res => {
-                //         if (res.data.status_code === 10 && !this.username) {
-                //             this.username = res.data.lbf_data.username
-                //         } else {
-                //             this.$router.push({
-                //                 name: "Login"
-                //             });
-                //         }
-                //     })
-                //     .catch((err) => console.log(err));
-                console.log("isConnected");
-            }, 10000);
+                axios
+                    .get(this.isConnectedUrl)
+                    .then(res => {
+                        if (res.data.result && !this.username) {
+                            this.username = res.data.result.username
+                        } else {
+                            if (this.$route.name !== 'Login') {
+                                this.$router.push({
+                                    name: "Login"
+                                });
+                            }
+                        }
+                    })
+                    .catch((err) => console.log(err));
+            }, 2000);
         },
         logout() {
-            // axios
-            //     .get(this.logoutURL)
-            //     .then(res => {
-            //         if (res.data.code == 201) {
-            //             this.$router.push({
-            //                 name: "Login"
-            //             });
-            //         }
-            //     });
-            console.log("logout");
+            axios
+                .get(this.logoutUrl)
+                .then(res => {
+                    if (res.data.message && this.$route.name !== 'Login') {
+                        this.$router.push({
+                            name: "Login"
+                        });
+                    }
+                });
         }
     }
 };
