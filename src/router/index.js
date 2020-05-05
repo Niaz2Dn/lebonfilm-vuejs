@@ -38,8 +38,8 @@ Vue.use(VueRouter)
             props: true
         },
         {
-            path: "/profile/:username",
-            name: "Profile",
+            path: "/profil/:username",
+            name: "Profil",
             component: Profile
         },
         {
