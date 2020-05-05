@@ -57,20 +57,6 @@ export default {
             }
         },
         isConnected() {
-            axios
-                .get(this.isConnectedUrl)
-                .then(res => {
-                    if (res.data.result && !this.username) {
-                        this.username = res.data.result.username
-                    } else {
-                        if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
-                            this.$router.push({
-                                name: "Login"
-                            });
-                        }
-                    }
-                })
-                .catch((err) => console.log(err));
             setInterval(() => {
                 axios
                     .get(this.isConnectedUrl)
