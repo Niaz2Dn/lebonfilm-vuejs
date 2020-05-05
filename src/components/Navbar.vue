@@ -58,8 +58,11 @@ export default {
         },
         isConnected() {
             setInterval(() => {
-                axios
-                    .get(this.isConnectedUrl)
+                    axios({
+                        method: 'GET',
+                        url: this.isConnectedUrl,
+                        withCredentials: true
+                    })
                     .then(res => {
                         if (res.data.result) {
                             if(!this.username) {

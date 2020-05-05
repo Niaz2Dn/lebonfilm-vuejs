@@ -59,7 +59,6 @@ export default {
                 axios({
                     method: 'POST',
                     url: this.loginUserUrl,
-                    withCredentials: true,
                     data: {
                         username: this.form["username"],
                         password: this.form["password"]
