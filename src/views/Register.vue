@@ -83,16 +83,14 @@ export default {
                     }
                 )
                 .then(res => {
-                    if (res.data.message) {
-                        this.success = true;
-                        this.successMessage = res.data.message;
-                        setTimeout(() => this.$router.push("/login"), 3000);
-                    } else {
-                        this.error = true;
-                        this.errorMessage = res.data.error_message;
-                    }
+                    this.success = true;
+                    this.successMessage = res.data.message;
+                    setTimeout(() => this.$router.push("/login"), 3000);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    this.error = true;
+                    this.errorMessage = err.data.error_message;
+                })
             }
             setTimeout(() => {this.error = false;}, 6000);
         }

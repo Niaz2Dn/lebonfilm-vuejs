@@ -64,19 +64,14 @@ export default {
                         password: this.form["password"]
                     }
                 )
-                .then(res => {
-                    console.log(res);
-                    if (res.data.message) {
-                        this.$router.push({
-                            name: "Home"
-                        });
-                    } else {
-                        this.error = true;
-                        this.errorMessage = res.data.error_message;
-                    }
+                .then(() => {
+                    this.$router.push({
+                        name: "Home"
+                    });
                 })
                 .catch(err => {
-                    console.log(err.response);
+                    this.error = true;
+                    this.errorMessage = err.data.error_message;
                 })
             }
             setTimeout(() => {this.error = false;}, 6000);
