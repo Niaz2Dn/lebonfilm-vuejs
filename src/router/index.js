@@ -6,6 +6,7 @@ import Movie from '@/views/Movie.vue'
 import Search from '@/views/Search.vue'
 import Register from '@/views/Register.vue'
 import Profile from '@/views/Profile.vue'
+import NotFound from '@/views/NotFound.vue'
 import "vue-lazy-youtube-video/dist/style.simplified.css";
 
 Vue.use(VueRouter)
@@ -25,6 +26,10 @@ Vue.use(VueRouter)
             path: '/register',
             name: 'Register',
             component: Register
+        },
+        {
+            path: '/*',
+            component: NotFound
         },
         {
             path: "/movie/:id",
