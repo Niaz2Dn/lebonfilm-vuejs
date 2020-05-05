@@ -70,9 +70,10 @@ export default {
                     });
                 })
                 .catch(err => {
-                    console.log(err.data);
-                    this.error = true;
-                    this.errorMessage = err.data.error_message;
+                    if (err.response.data.error_message) {
+                        this.error = true;
+                        this.errorMessage = err.response.data.error_message;
+                    }
                 })
             }
             setTimeout(() => {this.error = false;}, 6000);
