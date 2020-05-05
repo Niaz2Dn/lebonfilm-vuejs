@@ -72,18 +72,15 @@ export default {
                 this.$refs["firstname"].validate(true);
                 this.$refs["email"].validate(true);
             } else {
-                axios(
+                axios
+                .post(
+                    this.newUserUrl, 
                     {
-                        method: 'POST',
-                        url: this.newUserUrl,
-                        headers: {'Content-Type': 'application/json'},
-                        data: {
-                            username: this.form["username"],
-                            password: this.form["password"],
-                            lastname: this.form["lastname"],
-                            firstname: this.form["firstname"],
-                            email: this.form["email"]
-                        }
+                        username: this.form["username"],
+                        password: this.form["password"],
+                        lastname: this.form["lastname"],
+                        firstname: this.form["firstname"],
+                        email: this.form["email"]
                     }
                 )
                 .then(res => {
