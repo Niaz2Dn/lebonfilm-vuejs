@@ -58,20 +58,20 @@ export default {
         },
         isConnected() {
             setInterval(() => {
-                axios
-                    .get(this.isConnectedUrl)
-                    .then(res => {
-                        if (res.data.result && !this.username) {
-                            this.username = res.data.result.username
-                        } else {
-                            if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {
-                                this.$router.push({
-                                    name: "Login"
-                                });
-                            }
-                        }
-                    })
-                    .catch((err) => console.log(err));
+                // axios
+                //     .get(this.isConnectedUrl)
+                //     .then(res => {
+                //         if (res.data.result && !this.username) {
+                //             this.username = res.data.result.username
+                //         } else {
+                //             if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {
+                //                 this.$router.push({
+                //                     name: "Login"
+                //                 });
+                //             }
+                //         }
+                //     })
+                //     .catch((err) => console.log(err));
             }, 2000);
         },
         logout() {
