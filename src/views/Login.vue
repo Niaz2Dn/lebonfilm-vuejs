@@ -56,14 +56,15 @@ export default {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
             } else {
-                axios
-                .post(
-                    this.loginUserUrl,
-                    {
+                axios({
+                    method: 'POST',
+                    url: this.loginUserUrl,
+                    withCrednetials: true,
+                    data: {
                         username: this.form["username"],
                         password: this.form["password"]
                     }
-                )
+                })
                 .then(() => {
                     this.$router.push({
                         name: "Home"
