@@ -76,7 +76,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    console.log(err.response.body);
+                    console.log(err.response);
                 })
             }
             setTimeout(() => {this.error = false;}, 6000);
