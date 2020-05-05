@@ -1,5 +1,5 @@
 <template>
-    <v-container :style="{ backgroundImage: 'url(' + require('@/assets/landingRegister.jpg') + ')' }" class="background-img" fluid fill-height>
+    <v-container :style="{ backgroundImage: 'url(' + require('@/assets/landingRegister.png') + ')' }" class="background-img" fluid fill-height>
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
                 <v-card raised>
