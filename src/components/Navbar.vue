@@ -22,7 +22,7 @@
                 </v-toolbar-title>
             </div>
             <v-spacer></v-spacer>
-            <v-text-field class="search-bar mt-6 mr-2" prepend-icon="mdi-magnify" placeholder="Find movies..." dense outlined single-line flat ref="searchTitle" v-model="searchTitle" v-on:keyup.enter="search" color="light-blue lighten-1"></v-text-field>
+            <v-text-field class="search-bar mt-6 mr-2" prepend-icon="mdi-magnify" placeholder="Find movies..." dense outlined single-line flat ref="searchTitle" v-model="searchTitle" v-on:keyup.enter="search" color="light-blue"></v-text-field>
             <v-btn large icon @click="logout" color="grey">
                 <v-icon>mdi-exit-to-app</v-icon>
             </v-btn>
