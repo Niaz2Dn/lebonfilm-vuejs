@@ -65,6 +65,7 @@ export default {
                     }
                 )
                 .then(res => {
+                    console.log(res);
                     if (res.data.message) {
                         this.$router.push({
                             name: "Home"
