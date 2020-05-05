@@ -38,7 +38,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
     data: function() {
@@ -55,7 +55,7 @@ export default {
                     return pattern.test(value) || "Invalid e-mail.";
                 }
             },
-            newUserUrl: "https://lebonfilm.herokuapp.com/newUser"
+            newUserUrl: "https://lebonfilm-prod.herokuapp.com/users"
         };
     },
     methods: {
@@ -71,29 +71,28 @@ export default {
                 this.$refs["firstname"].validate(true);
                 this.$refs["email"].validate(true);
             } else {
-                // axios
-                // .post(
-                //     this.newUserUrl, 
-                //     {
-                //         username: this.form["username"],
-                //         password: this.form["password"],
-                //         lastname: this.form["lastname"],
-                //         firstname: this.form["firstname"],
-                //         email: this.form["email"]
-                //     }
-                // )
-                // .then(res => {
-                //     if (res.data.status_code === 2) {
-                //         this.success = true;
-                //         this.successMessage = res.data.status_message;
-                //         setTimeout(() => this.$router.push("/login"), 3000);
-                //     } else {
-                //         this.error = true;
-                //         this.errorMessage = res.data.status_message;
-                //     }
-                // })
-                // .catch(err => console.log(err));
-                console.log("register");
+                axios
+                .post(
+                    this.newUserUrl, 
+                    {
+                        username: this.form["username"],
+                        password: this.form["password"],
+                        lastname: this.form["lastname"],
+                        firstname: this.form["firstname"],
+                        email: this.form["email"]
+                    }
+                )
+                .then(res => {
+                    if (res.data.message) {
+                        this.success = true;
+                        this.successMessage = res.data.status_message;
+                        setTimeout(() => this.$router.push("/login"), 3000);
+                    } else {
+                        this.error = true;
+                        this.errorMessage = res.data.status_message;
+                    }
+                })
+                .catch(err => console.log(err));
             }
             setTimeout(() => {this.error = false;}, 6000);
         }

@@ -42,7 +42,7 @@ export default {
             username: "",
             searchTitle: "",
             isConnectedUrl: "https://lebonfilm-prod.herokuapp.com/isConnected",
-            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout"
+            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logoutUser"
         };
     },
     mounted() {

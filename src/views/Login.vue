@@ -34,7 +34,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
     data: function() {
@@ -45,7 +45,7 @@ export default {
             rules: {
                 required: value => !!value || "Required."
             },
-            loginUserUrl: "https://lebonfilm.herokuapp.com/loginUser"
+            loginUserUrl: "https://lebonfilm-prod.herokuapp.com/loginUser"
         };
     },
     methods: {
@@ -56,25 +56,24 @@ export default {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
             } else {
-                // axios
-                // .post(
-                //     this.loginUserUrl,
-                //     {
-                //         username: this.form["username"],
-                //         password: this.form["password"]
-                //     }
-                // )
-                // .then(res => {
-                //     if (res.data.status_code === 6) {
-                //         this.$router.push({
-                //             name: "Home"
-                //         });
-                //     } else {
-                //         this.error = true;
-                //         this.errorMessage = res.data.status_message;
-                //     }
-                // });
-                console.log("login");
+                axios
+                .post(
+                    this.loginUserUrl,
+                    {
+                        username: this.form["username"],
+                        password: this.form["password"]
+                    }
+                )
+                .then(res => {
+                    if (res.data.message) {
+                        this.$router.push({
+                            name: "Home"
+                        });
+                    } else {
+                        this.error = true;
+                        this.errorMessage = res.data.status_message;
+                    }
+                });
             }
             setTimeout(() => {this.error = false;}, 6000);
         }
