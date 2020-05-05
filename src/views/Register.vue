@@ -60,11 +60,12 @@ export default {
     },
     methods: {
         register() {
+            console.log("ici")
             this.error = false;
             this.errorMessage = "";
             this.success = false;
             this.successMessage = "";
-            if (this.form["username"] || this.form["password"] || this.form["lastname"] || this.form["firstname"] || this.form["email"]) {
+            if (!(this.form["username"] && this.form["password"] && this.form["lastname"] && this.form["firstname"] && this.form["email"])) {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
                 this.$refs["lastname"].validate(true);

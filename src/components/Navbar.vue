@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import axios from "axios"
+// import axios from "axios"
 
 export default {
     data() {
@@ -57,33 +57,47 @@ export default {
             }
         },
         isConnected() {
+            // axios
+            //     .get(this.isConnectedUrl)
+            //     .then(res => {
+            //         if (res.data.result && !this.username) {
+            //             this.username = res.data.result.username
+            //         } else {
+            //             if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
+            //                 this.$router.push({
+            //                     name: "Login"
+            //                 });
+            //             }
+            //         }
+            //     })
+            //     .catch((err) => console.log(err));
             setInterval(() => {
-                axios
-                    .get(this.isConnectedUrl)
-                    .then(res => {
-                        if (res.data.result && !this.username) {
-                            this.username = res.data.result.username
-                        } else {
-                            if (this.$route.name !== 'Login') {
-                                this.$router.push({
-                                    name: "Login"
-                                });
-                            }
-                        }
-                    })
-                    .catch((err) => console.log(err));
+                // axios
+                //     .get(this.isConnectedUrl)
+                //     .then(res => {
+                //         if (res.data.result && !this.username) {
+                //             this.username = res.data.result.username
+                //         } else {
+                //             if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
+                //                 this.$router.push({
+                //                     name: "Login"
+                //                 });
+                //             }
+                //         }
+                //     })
+                //     .catch((err) => console.log(err));
             }, 2000);
         },
         logout() {
-            axios
-                .get(this.logoutUrl)
-                .then(res => {
-                    if (res.data.message && this.$route.name !== 'Login') {
-                        this.$router.push({
-                            name: "Login"
-                        });
-                    }
-                });
+            // axios
+            //     .get(this.logoutUrl)
+            //     .then(res => {
+            //         if (res.data.message && this.$route.name !== 'Login') {
+            //             this.$router.push({
+            //                 name: "Login"
+            //             });
+            //         }
+            //     });
         }
     }
 };

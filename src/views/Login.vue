@@ -52,7 +52,7 @@ export default {
         login() {
             this.error = false;
             this.errorMessage = "";
-            if (this.form["username"] || this.form["password"]) {
+            if (!(this.form["username"] && this.form["password"])) {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
             } else {
