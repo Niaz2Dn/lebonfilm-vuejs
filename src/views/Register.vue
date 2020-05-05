@@ -76,17 +76,14 @@ export default {
                     {
                         method: 'POST',
                         url: this.newUserUrl,
-                        headers: {'Content-Type': 'applicaion/json'}
-                    }
-                )
-                .post(
-                    this.newUserUrl, 
-                    {
-                        username: this.form["username"],
-                        password: this.form["password"],
-                        lastname: this.form["lastname"],
-                        firstname: this.form["firstname"],
-                        email: this.form["email"]
+                        headers: {'Content-Type': 'application/json'},
+                        data: {
+                            username: this.form["username"],
+                            password: this.form["password"],
+                            lastname: this.form["lastname"],
+                            firstname: this.form["firstname"],
+                            email: this.form["email"]
+                        }
                     }
                 )
                 .then(res => {
