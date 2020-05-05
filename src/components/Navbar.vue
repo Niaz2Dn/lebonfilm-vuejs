@@ -92,7 +92,7 @@ export default {
             axios
                 .get(this.logoutUrl)
                 .then(res => {
-                    if (res.data.message && this.$route.name !== 'Login') {
+                    if (res.data.message) {
                         this.$router.push({
                             name: "Login"
                         });
