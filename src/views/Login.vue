@@ -73,7 +73,10 @@ export default {
                         this.error = true;
                         this.errorMessage = res.data.error_message;
                     }
-                });
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             }
             setTimeout(() => {this.error = false;}, 6000);
         }
