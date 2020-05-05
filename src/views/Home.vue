@@ -20,16 +20,10 @@ export default {
         MovieGrid
     },
     mounted() {
-        const key = process.env.VUE_APP_TMDB_API_KEY;
         axios
-            .get("https://api.themoviedb.org/3/trending/movie/day?api_key=" + key)
+            .get(this.trendingMoviesUrl)
             .then(res => {
                 this.trendingMovies = res.data.results
-                this.trendingMovies.forEach(element => {
-                    element['category'] = "action aventure"
-                    element['backdrop_url'] = this.backdropURL + element.backdrop_path
-                    element['poster_url'] = this.imageURL + element.poster_path
-                });
                 for (let i = 0; i < 5; i++) {
                     let item = this.trendingMovies[Math.floor(Math.random() * this.trendingMovies.length)];
                     if (!this.featured.includes(item)) {
@@ -43,9 +37,7 @@ export default {
         return {
             featured: [],
             trendingMovies: [],
-            trendingMoviesURL: "https://lebonfilm.herokuapp.com/getTrendingMovies",
-            imageURL: "http://image.tmdb.org/t/p/w500",
-            backdropURL: "http://image.tmdb.org/t/p/original"
+            trendingMoviesUrl: "https://lebonfilm-prod.herokuapp.com/movie/trending"
         };
     }
 }
