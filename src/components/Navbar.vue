@@ -61,8 +61,11 @@ export default {
                 axios
                     .get(this.isConnectedUrl)
                     .then(res => {
-                        if (res.data.result && !this.username) {
-                            this.username = res.data.result.username
+                        if (res.data.result) {
+                            if(!this.username) {
+                                this.username = res.data.result.username
+                            }
+
                         } else {
                             if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {
                                 this.$router.push({

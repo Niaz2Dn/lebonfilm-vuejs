@@ -56,7 +56,6 @@ export default {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
             } else {
-                axios.defaults.withCredentials = true;
                 axios
                 .post(
                     this.loginUserUrl,
