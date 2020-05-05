@@ -38,6 +38,7 @@ export default {
     mounted() {
         this.noData = false;
         this.searchResults = [];
+        axios.defaults.withCredentials = false;
         axios
             .get("https://api.themoviedb.org/3/search/movie?language=en-US&include_adult=false&query=" + this.$props.name + "&api_key=" + process.env.VUE_APP_TMDB_API_KEY + "&page=" + this.page)
             .then(res => {
