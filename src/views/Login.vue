@@ -6,7 +6,7 @@
                     <v-card-title class="justify-center">
                         <img class="ma-8" width="300" src="@/assets/logo.png" />
                     </v-card-title>
-                    <v-toolbar color="light-blue" dark flat>
+                    <v-toolbar color="light-blue lighten-1" dark flat>
                         <v-spacer></v-spacer>
                         <v-toolbar-title class="headline font-weight-black">Le bon film pour vous.</v-toolbar-title>
                         <v-spacer></v-spacer>
@@ -22,7 +22,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn @click="login" color="light-blue" class="mr-4 white--text">
+                        <v-btn @click="login" color="light-blue lighten-1" class="mr-4 white--text">
                             <div class="font-weight-black subtitle-1">Login</div>
                         </v-btn>
                         <router-link class="sign-up-btn ma-4" :to="{name: 'Register'}">Sign up</router-link>
@@ -71,7 +71,7 @@ export default {
                         });
                     } else {
                         this.error = true;
-                        this.errorMessage = res.data.status_message;
+                        this.errorMessage = res.data.error_message;
                     }
                 });
             }

@@ -6,7 +6,7 @@
                     <v-card-title class="justify-center">
                         <img class="ma-8" width="300" src="@/assets/logo.png" />
                     </v-card-title>
-                    <v-toolbar color="light-blue" dark flat>
+                    <v-toolbar color="light-blue lighten-1" dark flat>
                         <v-spacer></v-spacer>
                         <v-toolbar-title class="headline font-weight-black">Sign up for an account</v-toolbar-title>
                         <v-spacer></v-spacer>
@@ -27,7 +27,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <router-link class="sign-in-btn ma-4" :to="{name: 'Login'}">Login</router-link>
-                        <v-btn @click="register" color="light-blue" class="mr-4 white--text">
+                        <v-btn @click="register" color="light-blue lighten-1" class="mr-4 white--text">
                             <div class="font-weight-black subtitle-1">Sign up</div>
                         </v-btn>
                     </v-card-actions>
@@ -60,7 +60,6 @@ export default {
     },
     methods: {
         register() {
-            console.log("ici")
             this.error = false;
             this.errorMessage = "";
             this.success = false;
@@ -86,11 +85,11 @@ export default {
                 .then(res => {
                     if (res.data.message) {
                         this.success = true;
-                        this.successMessage = res.data.status_message;
+                        this.successMessage = res.data.message;
                         setTimeout(() => this.$router.push("/login"), 3000);
                     } else {
                         this.error = true;
-                        this.errorMessage = res.data.status_message;
+                        this.errorMessage = res.data.error_message;
                     }
                 })
                 .catch(err => console.log(err));
