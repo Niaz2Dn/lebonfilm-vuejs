@@ -74,10 +74,11 @@ export default {
             }
         })
         .catch(err => {
-            if (err.response.status == 404 || err.response.status == 500) {
-                console.log(err.response.data.error_message)
-            }
-        })
+            console.log(err);
+            // if (err.response.status == 404 || err.response.status == 500) {
+            //     console.log(err.response.data.error_message)
+            // }
+        });
     },
     methods: {
         trailer() {
