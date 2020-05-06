@@ -51,7 +51,7 @@ export default {
         return {
             movie: "",
             trailerLoaded: false,
-            username: "",
+            username: this.$parent.username,
             comments: [],
             newComment: "",
             isLiked: false,
