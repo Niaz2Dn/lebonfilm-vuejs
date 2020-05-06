@@ -4,10 +4,10 @@
             <v-row align="start" justify="end" class="mr-8 pr-8">
                 <v-card class="pr-8 pt-4 mr-8 mt-8" width="600" color="transparent" outlined>
                     <v-card-title :title="movie.original_title || movie.title" class="display-2 font-weight-black white--text">{{ (movie.original_title || movie.title) | truncate(movie.original_title || movie.title, 33, "...")}}
-                        <span :title="movie.newDate" class="ml-2 op mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.newDate }}</span>
+                        <span :title="movie.new_date" class="ml-2 op mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
                     </v-card-title>
-                    <v-card-text class="op body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}</v-card-text>
-                    <v-rating class="ml-4 op1" :title="movie.newRating + '/5'" v-model="movie.newRating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
+                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}</v-card-text>
+                    <v-rating class="ml-4" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
                     <v-card-actions>
                         <v-dialog @click:outside="resetTrailer" width="1080" overlay-opacity="0.2">
                             <template v-slot:activator="{ on }">
@@ -66,14 +66,11 @@ export default {
     mounted() {
         axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
         .then(res => {
-            console.log(res);
-            // if (res.data.result) {
-
-            //     this.movie = res.data.result;
-            //     this.movie["newDate"] = this.movie.release_date.substring(0, 4);
-            //     this.movie["newRating"] = (this.movie.vote_average * 5) / 10;
-            //     console.log(this.movie);
-            // }
+            if (res.data.result) {
+                this.movie = res.data.result;
+                this.movie["new_date"] = this.movie.release_date.substring(0, 4);
+                this.movie["new_rating"] = (this.movie.vote_average * 5) / 10;
+            }
         })
         .catch(err => {
             console.log(err);
