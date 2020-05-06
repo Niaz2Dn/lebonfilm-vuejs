@@ -88,7 +88,7 @@ export default {
             //     console.log(err.response.data.error_message)
             // }
         });
-        this.$root.$on('username', (res) => this.username = res);
+        this.$root.$on('username', (res) => {this.username = res});
     },
     methods: {
         trailer() {
