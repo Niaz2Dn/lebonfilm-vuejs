@@ -63,7 +63,7 @@ export default {
     },
     props: ["id"],
     mounted() {
-        axios.get(this.movieDetailsUrl)
+        axios.get(this.movieDetailsUrl+"/"+this.id)
         .then(res => {
             if (res.data.result) {
                 this.movie = res.data.result;
