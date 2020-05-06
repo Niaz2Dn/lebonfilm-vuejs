@@ -94,7 +94,7 @@ export default {
         getLikes() {
                 axios({
                     method: 'GET',
-                    url: this.movieLikeUrl + "/" + this.id,
+                    url: this.movieLikeUrl + "?tmdb_id=" + this.id,
                 })
                 .then(res => {
                     if(res.data.results) {
