@@ -64,7 +64,7 @@ export default {
     },
     props: ["id"],
     mounted() {
-        axios.get(this.movieDetailsUrl+"/"+this.id)
+        axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
         .then(res => {
             if (res.data.result) {
                 this.movie = res.data.result;
@@ -91,57 +91,57 @@ export default {
     //   });
     //   this.newComment = "";
     // },
-        getLikes() {
-                axios({
-                    method: 'GET',
-                    url: this.movieLikeUrl + "?tmdb_id=" + this.id,
-                })
-                .then(res => {
-                    if(res.data.results) {
-                        this.nbLikes = res.data.results.length
-                        this.isLiked = false
-                        res.data.results.forEach(element => {
-                            if (element === this.username) {
-                                this.isLiked = true
-                            }
-                        });
-                    }
-                })
-                .catch(() => {
-                })
-        },
-        like() {
-            if (!this.isLiked) {
-                axios({
-                    method: 'POST',
-                    url: this.movieLikeUrl,
-                    data: {
-                        username: this.username,
-                        tmdb_id: this.id
-                    }
-                })
-                .then(() => {
-                    this.getLikes();
-                })
-                .catch(() => {
-                })
-            } else {
-                axios({
-                    method: 'DELETE',
-                    url: this.movieLikeUrl,
-                    data: {
-                        username: this.username,
-                        tmdb_id: this.id
-                    }
-                })
-                .then(() => {
-                    this.getLikes();
-                })
-                .catch(() => {
-                })
-            }
+        // getLikes() {
+        //         axios({
+        //             method: 'GET',
+        //             url: this.movieLikeUrl + "?tmdb_id=" + this.id,
+        //         })
+        //         .then(res => {
+        //             if(res.data.results) {
+        //                 this.nbLikes = res.data.results.length
+        //                 this.isLiked = false
+        //                 res.data.results.forEach(element => {
+        //                     if (element === this.username) {
+        //                         this.isLiked = true
+        //                     }
+        //                 });
+        //             }
+        //         })
+        //         .catch(() => {
+        //         })
+        // },
+        // like() {
+        //     if (!this.isLiked) {
+        //         axios({
+        //             method: 'POST',
+        //             url: this.movieLikeUrl,
+        //             data: {
+        //                 username: this.username,
+        //                 tmdb_id: this.id
+        //             }
+        //         })
+        //         .then(() => {
+        //             this.getLikes();
+        //         })
+        //         .catch(() => {
+        //         })
+        //     } else {
+        //         axios({
+        //             method: 'DELETE',
+        //             url: this.movieLikeUrl,
+        //             data: {
+        //                 username: this.username,
+        //                 tmdb_id: this.id
+        //             }
+        //         })
+        //         .then(() => {
+        //             this.getLikes();
+        //         })
+        //         .catch(() => {
+        //         })
+        //     }
             
-        },
+        // },
         resetTrailer() {
             this.trailerLoaded = false;
         }
