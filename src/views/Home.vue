@@ -23,7 +23,6 @@ export default {
         axios
             .get(this.trendingMoviesUrl)
             .then(res => {
-                console.log(res.data.results);
                 this.trendingMovies = res.data.results
                 for (let i = 0; i < 5; i++) {
                     let item = this.trendingMovies[Math.floor(Math.random() * this.trendingMovies.length)];

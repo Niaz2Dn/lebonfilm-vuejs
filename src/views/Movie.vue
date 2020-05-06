@@ -66,12 +66,14 @@ export default {
     mounted() {
         axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
         .then(res => {
-            if (res.data.result) {
-                this.movie = res.data.result;
-                this.movie["newDate"] = this.movie.release_date.substring(0, 4);
-                this.movie["newRating"] = (this.movie.vote_average * 5) / 10;
-                console.log(this.movie);
-            }
+            console.log(res);
+            // if (res.data.result) {
+
+            //     this.movie = res.data.result;
+            //     this.movie["newDate"] = this.movie.release_date.substring(0, 4);
+            //     this.movie["newRating"] = (this.movie.vote_average * 5) / 10;
+            //     console.log(this.movie);
+            // }
         })
         .catch(err => {
             console.log(err);
