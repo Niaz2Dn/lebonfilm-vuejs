@@ -5,7 +5,6 @@ import Login from '@/views/Login.vue'
 import Movie from '@/views/Movie.vue'
 import Search from '@/views/Search.vue'
 import Register from '@/views/Register.vue'
-import Profile from '@/views/Profile.vue'
 import "vue-lazy-youtube-video/dist/style.simplified.css";
 
 Vue.use(VueRouter)
@@ -31,11 +30,6 @@ Vue.use(VueRouter)
             name: "Movie",
             component: Movie,
             props: true
-        },
-        {
-            path: "/profil/:username",
-            name: "Profil",
-            component: Profile
         },
         {
             path: "/search/:name",

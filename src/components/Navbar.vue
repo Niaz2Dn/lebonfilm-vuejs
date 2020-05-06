@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <v-app-bar app color="white" v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
+        <v-app-bar app color="white" v-if="this.$route.name !== 'Register'">
             <span class="pt-4 pb-2">
                 <img width="130" src="@/assets/logo.png"/>
             </span>
@@ -68,7 +68,7 @@ export default {
                         if (res.data.result) {
                             if(!this.username) {
                                 this.username = res.data.result.username
-                                this.$emit('username', this.username);
+                                this.$root.$emit('username', this.username);
                             }
                         } else {
                             if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {

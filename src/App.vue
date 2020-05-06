@@ -1,6 +1,6 @@
 <template>
     <v-app id="app">
-        <Navbar v-on:childToParent="updateUsername"></Navbar>
+        <Navbar></Navbar>
         <v-content>
             <router-view></router-view>
         </v-content>
@@ -14,16 +14,6 @@ export default {
     name: 'App',
     components: {
         Navbar
-    },
-    data() {
-        return {
-            username: ""
-        };
-    },
-    methods: {
-        updateUsername (value) {
-            this.username = value;
-        }
     }
 };
 </script>
