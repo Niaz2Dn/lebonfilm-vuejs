@@ -5,9 +5,11 @@ import Login from '@/views/Login.vue'
 import Movie from '@/views/Movie.vue'
 import Search from '@/views/Search.vue'
 import Register from '@/views/Register.vue'
+import Profil from '@/views/Profil.vue'
 import "vue-lazy-youtube-video/dist/style.simplified.css";
 
 Vue.use(VueRouter)
+Vue.use(require('vue-moment'))
     
     const routes = [
         {
@@ -36,6 +38,11 @@ Vue.use(VueRouter)
             name: "Search",
             component: Search,
             props: true
+        },
+        {
+            path: "/profil/:username",
+            name: "Profil",
+            component: Profil
         }
     ]
 

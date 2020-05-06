@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <v-app-bar app color="white" v-if="this.$route.name !== 'Register'">
+        <v-app-bar app color="white" v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
             <span class="pt-4 pb-2">
                 <img width="130" src="@/assets/logo.png"/>
             </span>
@@ -13,12 +13,12 @@
                     <router-link class="rt" :to="{name: 'Home'}">Home</router-link>
                 </v-toolbar-title>
             </div>
-            <div v-if="this.$route.name === 'Profile'">
+            <div v-if="this.$route.path === '/profil/' + this.username">
                 <v-toolbar-title class="uline ma-2 font-weight-medium subtitle-1">{{ username }}</v-toolbar-title>
             </div>
             <div v-else>
                 <v-toolbar-title class="ma-2 font-weight-medium subtitle-1">
-                <router-link class="rt" :to="{name: 'Profile', params: { username: this.username }}">{{ username }}</router-link>
+                <router-link class="rt" :to="{name: 'Profil', params: { username: this.username }}">{{ username }}</router-link>
                 </v-toolbar-title>
             </div>
             <v-spacer></v-spacer>
@@ -66,10 +66,8 @@ export default {
                     })
                     .then(res => {
                         if (res.data.result) {
-                            if(!this.username) {
-                                this.username = res.data.result.username
-                                this.$root.$emit('username', res.data.result.username);
-                            }
+                            this.$root.$emit('username', res.data.result.username);
+                            this.username = res.data.result.username
                         } else {
                             if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {
                                 this.$router.push({

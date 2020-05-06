@@ -6,17 +6,17 @@
                     <v-card-title :title="movie.original_title || movie.title" class="display-2 font-weight-black white--text">{{ (movie.original_title || movie.title) | truncate(movie.original_title || movie.title, 33, "...")}}
                         <span :title="movie.new_date" class="ml-2 op mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
                     </v-card-title>
-                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
-                        <div>budget : {{ movie.budget }}</div>
+                    <v-card-text class="op body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
+                        <!-- <div>budget : {{ movie.budget }}</div> -->
                         <div>category : {{ movie.category }}</div>
-                        <div>homepage_url : {{ movie.homepage_url }}</div>
+                        <!-- <div>homepage_url : {{ movie.homepage_url }}</div>
                         <div>keywords : {{ movie.keywords }}</div>
                         <div>recommendations : {{ movie.recommendations }}</div>
                         <div>revenue : {{ movie.revenue }}</div>
                         <div>runtime : {{ movie.runtime }}</div>
-                        <div>status : {{ movie.status }}</div>
+                        <div>status : {{ movie.status }}</div> -->
                     </v-card-text>
-                    <v-rating class="ml-4" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
+                    <v-rating class="ml-4 op1" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
                     <v-card-actions>
                         <v-dialog @click:outside="resetTrailer" width="1080" overlay-opacity="0.2">
                             <template v-slot:activator="{ on }">
@@ -37,6 +37,20 @@
                 </v-card>
             </v-row>
         </v-container>
+        <div class="ma-4 comments mb-8 pb-8">
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">
+                <span v-if="this.movieComments.length !== 0">Comments: ({{ this.movieComments.length }})
+                </span>
+                <span v-else>Comments: </span>
+            </div>
+            <div class="comment-input ">
+                <v-text-field class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" placeholder="Add a comment" color="light-blue" dense></v-text-field>
+                <v-btn @click="addComment" color="light-blue" class="white--text ma-4">
+                    <div class="font-weight-black subtitle-1">Add a comment</div>
+                </v-btn>
+                <Comments v-bind:comments="movieComments"></Comments>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -44,6 +58,7 @@
 <script>
 import axios from "axios";
 import LazyYoutubeVideo from "vue-lazy-youtube-video";
+import Comments from "@/components/Comments";
 
 export default {
     name: "Home",
@@ -51,13 +66,14 @@ export default {
         return {
             movie: "",
             trailerLoaded: false,
-            username: this.$parent.username,
-            comments: [],
+            username: "",
+            movieComments: [],
             newComment: "",
             isLiked: false,
             nbLikes: 0,
             movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details",
-            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes"
+            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes",
+            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/movie/comments"
         };
     },
     filters: {
@@ -70,7 +86,8 @@ export default {
         }
     },
     components: {
-        LazyYoutubeVideo
+        LazyYoutubeVideo,
+        Comments
     },
     props: ["id"],
     mounted() {
@@ -83,25 +100,48 @@ export default {
             }
         })
         .catch(err => {
-            console.log(err);
-            // if (err.response.status == 404 || err.response.status == 500) {
-            //     console.log(err.response.data.error_message)
-            // }
+            if (err.response.status == 404 || err.response.status == 500) {
+                console.log(err.response.data.error_message)
+            }
         });
+        this.getLikes();
+        this.getComments();
         this.$root.$on('username', (res) => {this.username = res});
     },
     methods: {
         trailer() {
           this.trailerLoaded = true;
         },
-    //     addComment() {
-    //   this.comments.push({
-    //     image: "https://www.randomuser.me/api/portraits/men/34.jpg",
-    //     content: this.newComment,
-    //     username: this.username
-    //   });
-    //   this.newComment = "";
-    // },
+        addComment() {
+            if (this.newComment) {
+                axios({
+                        method: 'POST',
+                        url: this.movieCommentsUrl,
+                        data: {
+                            username: this.username,
+                            tmdb_id: this.id,
+                            content: this.newComment
+                        }
+                    })
+                    .then(() => {
+                        this.getComments();
+                    })
+                    .catch(() => {})
+            }
+            this.newComment = "";
+        },
+        getComments() {
+                axios({
+                    method: 'GET',
+                    url: this.movieCommentsUrl + "?tmdb_id=" + this.id,
+                })
+                .then(res => {
+                    if(res.data.results) {
+                        this.movieComments = res.data.results
+                    }
+                })
+                .catch(() => {})
+        },
         getLikes() {
                 axios({
                     method: 'GET',
@@ -163,6 +203,9 @@ export default {
         },
         isLiked(newIsLiked) {
             this.isLiked = newIsLiked;
+        },
+        movieComments(newMovieComments) {
+            this.movieComments = newMovieComments;
         }
     }
 };
@@ -189,14 +232,5 @@ export default {
     background-color: white;
     display: block;
     text-decoration: none;
-}
-.comment {
-    color: black;
-}
-.com {
-    white-space: normal;
-    word-wrap: break-word;
-    display: block;
-    margin: 0 20px 0 20px;
 }
 </style>
