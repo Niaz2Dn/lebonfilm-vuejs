@@ -88,11 +88,6 @@ export default {
             //     console.log(err.response.data.error_message)
             // }
         });
-        setInterval(() => {
-        this.$root.$on('username', (res) => {
-            console.log(res);
-        })
-         }, 2000);
     },
     methods: {
         trailer() {
