@@ -46,7 +46,8 @@ export default {
             newComment: "",
             isLiked: false,
             nbLikes: 0,
-            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details"
+            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details",
+            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes"
         };
     },
     filters: {
@@ -90,24 +91,69 @@ export default {
     //   });
     //   this.newComment = "";
     // },
-    // like() {
-    //   if (this.isLiked) {
-    //     this.nbLikes--;
-    //     this.isLiked = false;
-    //   } else {
-    //     this.nbLikes++;
-    //     this.isLiked = true;
-    //   }
-    // },
+        getLikes() {
+                axios({
+                    method: 'GET',
+                    url: this.movieLikeUrl + "/" + this.id,
+                })
+                .then(res => {
+                    if(res.data.results) {
+                        this.nbLikes = res.data.results.length
+                        this.isLiked = false
+                        res.data.results.forEach(element => {
+                            if (element === this.username) {
+                                this.isLiked = true
+                            }
+                        });
+                    }
+                })
+                .catch(() => {
+                })
+        },
+        like() {
+            if (!this.isLiked) {
+                axios({
+                    method: 'POST',
+                    url: this.movieLikeUrl,
+                    data: {
+                        username: this.username,
+                        tmdb_id: this.id
+                    }
+                })
+                .then(() => {
+                    this.getLikes();
+                })
+                .catch(() => {
+                })
+            } else {
+                axios({
+                    method: 'DELETE',
+                    url: this.movieLikeUrl,
+                    data: {
+                        username: this.username,
+                        tmdb_id: this.id
+                    }
+                })
+                .then(() => {
+                    this.getLikes();
+                })
+                .catch(() => {
+                })
+            }
+            
+        },
         resetTrailer() {
-        this.trailerLoaded = false;
+            this.trailerLoaded = false;
         }
     },
-    // watch: {
-    //     nbLikes(newNbLikes) {
-    //         this.nbLikes = newNbLikes;
-    //     }
-    // }
+    watch: {
+        nbLikes(newNbLikes) {
+            this.nbLikes = newNbLikes;
+        },
+        isLiked(newIsLiked) {
+            this.isLiked = newIsLiked;
+        }
+    }
 };
 </script>
 
