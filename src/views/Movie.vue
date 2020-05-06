@@ -90,7 +90,7 @@ export default {
         });
         setInterval(() => {
         this.$root.$on('username', (res) => {
-            this.username = res
+            console.log(res);
         })
          }, 2000);
     },
