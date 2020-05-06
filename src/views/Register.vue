@@ -88,9 +88,11 @@ export default {
                     setTimeout(() => this.$router.push("/login"), 3000);
                 })
                 .catch(err => {
-                    if (err.response.data.error_message) {
-                        this.error = true;
-                        this.errorMessage = err.response.data.error_message;
+                    if (err.response.status == 400) {
+                        this.error = true
+                        this.errorMessage = err.response.data.error_message
+                    } else if(err.response.status == 500) {
+                        console.log(err.response.data.error_message)
                     }
                 })
             }

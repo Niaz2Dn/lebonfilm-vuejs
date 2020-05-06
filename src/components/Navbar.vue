@@ -76,19 +76,27 @@ export default {
                             }
                         }
                     })
-                    .catch((err) => console.log(err));
+                    .catch(() => {});
             }, 2000);
         },
         logout() {
-            axios
-                .get(this.logoutUrl)
-                .then(res => {
-                    if (res.data.message) {
-                        this.$router.push({
-                            name: "Login"
-                        });
-                    }
-                });
+            axios({
+                method: 'GET',
+                url: this.logoutUrl,
+                withCredentials: true
+            })
+            .then(res => {
+                if (res.data.message) {
+                    this.$router.push({
+                        name: "Login"
+                    });
+                }
+            })
+            .catch((err) => {
+                if (err.response.status === 401) {
+                    console.log(err.response.data.error_message);
+                }   
+            }
         }
     }
 };
