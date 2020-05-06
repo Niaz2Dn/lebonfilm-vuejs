@@ -51,6 +51,7 @@ export default {
         return {
             movie: "",
             trailerLoaded: false,
+            username: "",
             comments: [],
             newComment: "",
             isLiked: false,
@@ -87,6 +88,9 @@ export default {
             //     console.log(err.response.data.error_message)
             // }
         });
+        this.$root.$on('username', (res) => {
+            this.username = res
+        })
     },
     methods: {
         trailer() {
