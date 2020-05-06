@@ -67,7 +67,6 @@ export default {
                             if(!this.username) {
                                 this.username = res.data.result.username
                             }
-
                         } else {
                             if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {
                                 this.$router.push({
