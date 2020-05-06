@@ -60,7 +60,8 @@ export default {
             setInterval(() => {
                     axios({
                         method: 'GET',
-                        url: this.isConnectedUrl
+                        url: this.isConnectedUrl,
+                        withCredentials: true
                     })
                     .then(res => {
                         if (res.data.result) {
