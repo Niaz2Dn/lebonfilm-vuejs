@@ -6,7 +6,16 @@
                     <v-card-title :title="movie.original_title || movie.title" class="display-2 font-weight-black white--text">{{ (movie.original_title || movie.title) | truncate(movie.original_title || movie.title, 33, "...")}}
                         <span :title="movie.new_date" class="ml-2 op mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
                     </v-card-title>
-                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}</v-card-text>
+                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
+                        <div>budget : {{ movie.budget }}</div>
+                        <div>category : {{ movie.category }}</div>
+                        <div>homepage_url : {{ movie.homepage_url }}</div>
+                        <div>keywords : {{ movie.keywords }}</div>
+                        <div>recommendations : {{ movie.recommendations }}</div>
+                        <div>revenue : {{ movie.revenue }}</div>
+                        <div>runtime : {{ movie.runtime }}</div>
+                        <div>status : {{ movie.status }}</div>
+                    </v-card-text>
                     <v-rating class="ml-4" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
                     <v-card-actions>
                         <v-dialog @click:outside="resetTrailer" width="1080" overlay-opacity="0.2">
@@ -91,57 +100,57 @@ export default {
     //   });
     //   this.newComment = "";
     // },
-        // getLikes() {
-        //         axios({
-        //             method: 'GET',
-        //             url: this.movieLikeUrl + "?tmdb_id=" + this.id,
-        //         })
-        //         .then(res => {
-        //             if(res.data.results) {
-        //                 this.nbLikes = res.data.results.length
-        //                 this.isLiked = false
-        //                 res.data.results.forEach(element => {
-        //                     if (element === this.username) {
-        //                         this.isLiked = true
-        //                     }
-        //                 });
-        //             }
-        //         })
-        //         .catch(() => {
-        //         })
-        // },
-        // like() {
-        //     if (!this.isLiked) {
-        //         axios({
-        //             method: 'POST',
-        //             url: this.movieLikeUrl,
-        //             data: {
-        //                 username: this.username,
-        //                 tmdb_id: this.id
-        //             }
-        //         })
-        //         .then(() => {
-        //             this.getLikes();
-        //         })
-        //         .catch(() => {
-        //         })
-        //     } else {
-        //         axios({
-        //             method: 'DELETE',
-        //             url: this.movieLikeUrl,
-        //             data: {
-        //                 username: this.username,
-        //                 tmdb_id: this.id
-        //             }
-        //         })
-        //         .then(() => {
-        //             this.getLikes();
-        //         })
-        //         .catch(() => {
-        //         })
-        //     }
+        getLikes() {
+                axios({
+                    method: 'GET',
+                    url: this.movieLikeUrl + "?tmdb_id=" + this.id,
+                })
+                .then(res => {
+                    if(res.data.results) {
+                        this.nbLikes = res.data.results.length
+                        this.isLiked = false
+                        res.data.results.forEach(element => {
+                            if (element === this.username) {
+                                this.isLiked = true
+                            }
+                        });
+                    }
+                })
+                .catch(() => {
+                })
+        },
+        like() {
+            if (!this.isLiked) {
+                axios({
+                    method: 'POST',
+                    url: this.movieLikeUrl,
+                    data: {
+                        username: this.username,
+                        tmdb_id: this.id
+                    }
+                })
+                .then(() => {
+                    this.getLikes();
+                })
+                .catch(() => {
+                })
+            } else {
+                axios({
+                    method: 'DELETE',
+                    url: this.movieLikeUrl,
+                    data: {
+                        username: this.username,
+                        tmdb_id: this.id
+                    }
+                })
+                .then(() => {
+                    this.getLikes();
+                })
+                .catch(() => {
+                })
+            }
             
-        // },
+        },
         resetTrailer() {
             this.trailerLoaded = false;
         }

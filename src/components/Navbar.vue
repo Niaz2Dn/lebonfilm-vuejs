@@ -54,6 +54,7 @@ export default {
                 this.$router.push({
                     path: "/search/" + this.searchTitle
                 });
+                this.searchTitle = ""
             }
         },
         isConnected() {
