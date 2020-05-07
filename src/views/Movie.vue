@@ -75,7 +75,7 @@ export default {
             isLiked: false,
             nbLikes: 0,
             recoMovies: [],
-            details: false,
+            // details: false,
             movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details",
             movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes",
             movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/movie/comments"
@@ -103,7 +103,7 @@ export default {
                 this.movie = res.data.result;
                 this.movie["new_date"] = this.movie.release_date.substring(0, 4);
                 this.movie["new_rating"] = (this.movie.vote_average * 5) / 10;
-                this.details = true;
+                // this.details = true;
             }
         })
         .catch(err => {
@@ -111,21 +111,21 @@ export default {
                 console.log(err.response.data.error_message)
             }
         });
-        if (this.details) {
-            this.movie.recommendations.forEach(m => {
-                axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
-                .then(res => {
-                    if (res.data.result) {
-                        this.recoMovies.push(res.data.result);
-                    }
-                })
-                .catch(err => {
-                    if (err.response.status == 404 || err.response.status == 500) {
-                        console.log(err.response.data.error_message)
-                    }
-                });
-            })
-        }
+        // if (this.details) {
+        //     this.movie.recommendations.forEach(m => {
+        //         axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
+        //         .then(res => {
+        //             if (res.data.result) {
+        //                 this.recoMovies.push(res.data.result);
+        //             }
+        //         })
+        //         .catch(err => {
+        //             if (err.response.status == 404 || err.response.status == 500) {
+        //                 console.log(err.response.data.error_message)
+        //             }
+        //         });
+        //     })
+        // }
         this.getLikes();
         this.getComments();
         this.$root.$on('username', (res) => {this.username = res});
