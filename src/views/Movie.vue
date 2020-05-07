@@ -117,14 +117,11 @@ export default {
     },
     updated() {
         if (this.details) {
-            console.log(this.movie.recommendations)
             this.movie.recommendations.split(" ").forEach(m => {
-                console.log("----------------------------",m);
                 axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
                 .then(res => {
                     console.log(res);
                     if (res.data.result) {
-                        console.log("ok");
                         this.recoMovies.push(res.data.result);
                     }
                 })
@@ -135,6 +132,7 @@ export default {
                 });
             })
             this.details = false;
+            console.log(this.recoMovies);
         }
     },
     methods: {
