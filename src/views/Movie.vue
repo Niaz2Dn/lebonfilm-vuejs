@@ -111,6 +111,11 @@ export default {
                 console.log(err.response.data.error_message)
             }
         });
+        this.getLikes();
+        this.getComments();
+        this.$root.$on('username', (res) => {this.username = res});
+    },
+    updated() {
         if (this.details) {
             console.log(this.movie.recommendations)
             this.movie.recommendations.forEach(m => {
@@ -128,10 +133,8 @@ export default {
                     }
                 });
             })
+            this.details = false;
         }
-        this.getLikes();
-        this.getComments();
-        this.$root.$on('username', (res) => {this.username = res});
     },
     methods: {
         trailer() {
