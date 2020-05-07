@@ -229,12 +229,14 @@ export default {
             this.nbLikes = newNbLikes;
         },
         isLiked(newIsLiked) {
+            console.log("change");
             this.isLiked = newIsLiked;
         },
         movieComments(newMovieComments) {
             this.movieComments = newMovieComments;
         },
         recoMovies(newRecoMovies) {
+            console.log("iiiiiiii");
             this.recoMovies = newRecoMovies;
         }
     }
