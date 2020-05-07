@@ -62,6 +62,7 @@
 import axios from "axios";
 import LazyYoutubeVideo from "vue-lazy-youtube-video";
 import Comments from "@/components/Comments";
+import MovieGrid from "@/components/MovieGrid";
 
 export default {
     name: "Home",
@@ -92,7 +93,8 @@ export default {
     },
     components: {
         LazyYoutubeVideo,
-        Comments
+        Comments,
+        MovieGrid
     },
     props: ["id"],
     mounted() {
@@ -120,7 +122,6 @@ export default {
             this.movie.recommendations.split(" ").forEach(m => {
                 axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
                 .then(res => {
-                    console.log(res);
                     if (res.data.result) {
                         this.recoMovies.push(res.data.result);
                     }
@@ -132,7 +133,6 @@ export default {
                 });
             })
             this.details = false;
-            console.log(this.recoMovies);
         }
     },
     methods: {
@@ -229,14 +229,12 @@ export default {
             this.nbLikes = newNbLikes;
         },
         isLiked(newIsLiked) {
-            console.log("change");
             this.isLiked = newIsLiked;
         },
         movieComments(newMovieComments) {
             this.movieComments = newMovieComments;
         },
         recoMovies(newRecoMovies) {
-            console.log("iiiiiiii");
             this.recoMovies = newRecoMovies;
         }
     }
