@@ -134,6 +134,26 @@ export default {
             })
             this.details = false;
         }
+        if (this.id !== this.movie.tmdb_id) {
+            this.details = false;
+            axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
+            .then(res => {
+                if (res.data.result) {
+                    this.movie = res.data.result;
+                    this.movie["new_date"] = this.movie.release_date.substring(0, 4);
+                    this.movie["new_rating"] = (this.movie.vote_average * 5) / 10;
+                    this.details = true;
+                }
+            })
+            .catch(err => {
+                if (err.response.status == 404 || err.response.status == 500) {
+                    console.log(err.response.data.error_message)
+                }
+            });
+            this.getLikes();
+            this.getComments();
+            this.$root.$on('username', (res) => {this.username = res});
+        }
     },
     methods: {
         trailer() {
@@ -236,6 +256,9 @@ export default {
         },
         recoMovies(newRecoMovies) {
             this.recoMovies = newRecoMovies;
+        },
+        movie(newMovie) {
+            this.movie = newMovie;
         }
     }
 };
