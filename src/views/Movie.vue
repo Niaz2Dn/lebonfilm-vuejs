@@ -11,7 +11,6 @@
                         <div>category : {{ movie.category }}</div>
                         <!-- <div>homepage_url : {{ movie.homepage_url }}</div>
                         <div>keywords : {{ movie.keywords }}</div>
-                        <div>recommendations : {{ movie.recommendations }}</div>
                         <div>revenue : {{ movie.revenue }}</div>
                         <div>runtime : {{ movie.runtime }}</div>
                         <div>status : {{ movie.status }}</div> -->
@@ -37,6 +36,10 @@
                 </v-card>
             </v-row>
         </v-container>
+        <div class="ma-4">
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">Recommendations</div>
+            <MovieGrid v-bind:movies="recoMovies"/>
+        </div>
         <div class="ma-4 comments mb-8 pb-8">
             <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">
                 <span v-if="this.movieComments.length !== 0">Comments: ({{ this.movieComments.length }})
@@ -71,6 +74,8 @@ export default {
             newComment: "",
             isLiked: false,
             nbLikes: 0,
+            recoMovies: [],
+            details: false,
             movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details",
             movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes",
             movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/movie/comments"
@@ -91,12 +96,14 @@ export default {
     },
     props: ["id"],
     mounted() {
+        this.details = false;
         axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
         .then(res => {
             if (res.data.result) {
                 this.movie = res.data.result;
                 this.movie["new_date"] = this.movie.release_date.substring(0, 4);
                 this.movie["new_rating"] = (this.movie.vote_average * 5) / 10;
+                this.details = true;
             }
         })
         .catch(err => {
@@ -104,6 +111,21 @@ export default {
                 console.log(err.response.data.error_message)
             }
         });
+        if (this.details) {
+            this.movie.recommendations.forEach(m => {
+                axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
+                .then(res => {
+                    if (res.data.result) {
+                        this.recoMovies.push(res.data.result);
+                    }
+                })
+                .catch(err => {
+                    if (err.response.status == 404 || err.response.status == 500) {
+                        console.log(err.response.data.error_message)
+                    }
+                });
+            })
+        }
         this.getLikes();
         this.getComments();
         this.$root.$on('username', (res) => {this.username = res});
