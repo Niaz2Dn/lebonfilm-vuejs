@@ -118,7 +118,7 @@ export default {
     updated() {
         if (this.details) {
             console.log(this.movie.recommendations)
-            this.movie.recommendations.split().forEach(m => {
+            this.movie.recommendations.split(" ").forEach(m => {
                 console.log("----------------------------",m);
                 axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
                 .then(res => {
