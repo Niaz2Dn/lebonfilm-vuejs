@@ -124,6 +124,7 @@ export default {
                 .then(res => {
                     console.log(res);
                     if (res.data.result) {
+                        console.log("ok");
                         this.recoMovies.push(res.data.result);
                     }
                 })
@@ -234,6 +235,9 @@ export default {
         },
         movieComments(newMovieComments) {
             this.movieComments = newMovieComments;
+        },
+        recoMovies(newRecoMovies) {
+            this.recoMovies = newRecoMovies;
         }
     }
 };
