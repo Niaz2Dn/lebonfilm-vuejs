@@ -8,7 +8,7 @@
                             <v-card-title :title="(movie.title || movie.original_title)" class="display-3 font-weight-black">{{ (movie.title || movie.original_title) | truncate(24, '...') }}</v-card-title>
                             <v-card-text :title="movie.category" class="headline font-weight-regular">{{ movie.category }}</v-card-text>
                             <v-card-actions>
-                                <router-link class="rt" :to="{ name: 'Movie', params: { id: movie.id } }">
+                                <router-link class="rt" :to="{ name: 'Movie', params: { id: movie.tmdb_id } }">
                                     <v-btn class="ml-2 mt-4 subtitle-1 font-weight-bold" outlined large color="white">More Info</v-btn>
                                 </router-link>
                             </v-card-actions>
