@@ -4,9 +4,9 @@
             <v-row align="start" justify="end" class="mr-8 pr-8">
                 <v-card class="pr-8 pt-4 mr-8 mt-8" width="600" color="transparent" outlined>
                     <v-card-title :title="movie.original_title || movie.title" class="display-2 font-weight-black white--text">{{ (movie.original_title || movie.title) | truncate(movie.original_title || movie.title, 33, "...")}}
-                        <span :title="movie.new_date" class="ml-2 op mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
+                        <span :title="movie.new_date" class="ml-2 mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
                     </v-card-title>
-                    <v-card-text class="op body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
+                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
                         <!-- <div>budget : {{ movie.budget }}</div> -->
                         <div>category : {{ movie.category }}</div>
                         <!-- <div>homepage_url : {{ movie.homepage_url }}</div>
@@ -75,7 +75,7 @@ export default {
             isLiked: false,
             nbLikes: 0,
             recoMovies: [],
-            // details: false,
+            details: false,
             movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details",
             movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes",
             movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/movie/comments"
@@ -103,7 +103,7 @@ export default {
                 this.movie = res.data.result;
                 this.movie["new_date"] = this.movie.release_date.substring(0, 4);
                 this.movie["new_rating"] = (this.movie.vote_average * 5) / 10;
-                // this.details = true;
+                this.details = true;
             }
         })
         .catch(err => {
@@ -111,21 +111,24 @@ export default {
                 console.log(err.response.data.error_message)
             }
         });
-        // if (this.details) {
-        //     this.movie.recommendations.forEach(m => {
-        //         axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
-        //         .then(res => {
-        //             if (res.data.result) {
-        //                 this.recoMovies.push(res.data.result);
-        //             }
-        //         })
-        //         .catch(err => {
-        //             if (err.response.status == 404 || err.response.status == 500) {
-        //                 console.log(err.response.data.error_message)
-        //             }
-        //         });
-        //     })
-        // }
+        if (this.details) {
+            console.log(this.movie.recommendations)
+            this.movie.recommendations.forEach(m => {
+                console.log("----------------------------",m);
+                axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
+                .then(res => {
+                    console.log(res);
+                    if (res.data.result) {
+                        this.recoMovies.push(res.data.result);
+                    }
+                })
+                .catch(err => {
+                    if (err.response.status == 404 || err.response.status == 500) {
+                        console.log(err.response.data.error_message)
+                    }
+                });
+            })
+        }
         this.getLikes();
         this.getComments();
         this.$root.$on('username', (res) => {this.username = res});
@@ -240,12 +243,6 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 50vw rgb(0, 0, 0, 0.2);
-}
-.op {
-    opacity: 65%;
-}
-.op1 {
-    opacity: 95%;
 }
 .comment-input {
     color: white;
