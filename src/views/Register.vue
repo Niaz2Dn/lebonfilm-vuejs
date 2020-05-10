@@ -90,9 +90,9 @@ export default {
                 .catch(err => {
                     if (err.response.status == 400) {
                         this.error = true
-                        this.errorMessage = err.response.data.error_message
+                        this.errorMessage = err.response.data.error
                     } else if(err.response.status == 500) {
-                        console.log(err.response.data.error_message)
+                        console.log(err.response.data.error)
                     }
                 })
             }
