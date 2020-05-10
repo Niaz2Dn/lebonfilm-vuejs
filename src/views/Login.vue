@@ -45,7 +45,7 @@ export default {
             rules: {
                 required: value => !!value || "Required."
             },
-            loginUserUrl: "https://lebonfilm-prod.herokuapp.com/loginUser"
+            loginUserUrl: "https://lebonfilm-prod.herokuapp.com/login"
         };
     },
     methods: {
@@ -73,9 +73,9 @@ export default {
                 .catch(err => {
                     if (err.response.status == 401) {
                         this.error = true
-                        this.errorMessage = err.response.data.error_message
+                        this.errorMessage = err.response.data.error
                     } else if(err.response.status == 500) {
-                        console.log(err.response.data.error_message)
+                        console.log(err.response.data.error)
                     }
                 })
             }
