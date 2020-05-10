@@ -44,8 +44,9 @@ export default {
                 this.totalPages = res.data.total_pages;
                 this.totalResults = res.data.total_results;
                 res.data.results.forEach(element => {
-                    element['category'] = "action aventure"
-                    element['backdrop_url'] = this.imageURL + element.backdrop_path
+                    if (element.backdrop_path) {
+                        element['backdrop_url'] = this.imageURL + element.backdrop_path                        
+                    }
                     if (element.poster_path) {
                         element['poster_url'] = this.imageURL + element.poster_path
                     }
@@ -53,8 +54,6 @@ export default {
                 });
                 if (this.searchResults.length === 0) {
                     this.noData = true;
-                } else {
-                    console.log(this.searchResults)
                 }
             });
     },
@@ -65,12 +64,12 @@ export default {
             .get("https://api.themoviedb.org/3/search/movie?language=en-US&include_adult=false&query=" + this.$props.name + "&api_key=" + process.env.VUE_APP_TMDB_API_KEY + "&page=" + this.page)
             .then(res => {
                 res.data.results.forEach(element => {
-                    element['category'] = "action aventure"
-                    element['backdrop_url'] = this.imageURL + element.backdrop_path
+                    if (element.backdrop_path) {
+                        element['backdrop_url'] = this.imageURL + element.backdrop_path                        
+                    }
                     if (element.poster_path) {
                         element['poster_url'] = this.imageURL + element.poster_path
                     }
-
                     this.searchResults.push(element);
                 });
             });
@@ -87,11 +86,12 @@ export default {
                     this.totalPages = res.data.total_pages;
                     this.totalResults = res.data.total_results;
                     res.data.results.forEach(element => {
-                        element['category'] = "action aventure"
-                        element['backdrop_url'] = this.imageURL + element.backdrop_path
+                        if (element.backdrop_path) {
+                            element['backdrop_url'] = this.imageURL + element.backdrop_path                        
+                        }
                         if (element.poster_path) {
                             element['poster_url'] = this.imageURL + element.poster_path
-                        }                        
+                        }
                         this.searchResults.push(element);
                     });
                     if (this.searchResults.length === 0) {

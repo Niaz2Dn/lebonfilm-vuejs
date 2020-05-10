@@ -74,8 +74,6 @@ export default {
                     if (err.response.status == 401) {
                         this.error = true
                         this.errorMessage = err.response.data.error
-                    } else if(err.response.status == 500) {
-                        console.log(err.response.data.error)
                     }
                 })
             }
