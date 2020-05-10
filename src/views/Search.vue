@@ -23,7 +23,7 @@ import MovieGrid from "@/components/MovieGrid"
 export default {
     data() {
         return {
-        imageURL: "http://image.tmdb.org/t/p/w500",
+        imageURL: "http://image.tmdb.org/t/p/w780",
         searchResults: [],
         totalResults: "",
         totalPages: "",
@@ -44,9 +44,6 @@ export default {
                 this.totalPages = res.data.total_pages;
                 this.totalResults = res.data.total_results;
                 res.data.results.forEach(element => {
-                    if (element.backdrop_path) {
-                        element['backdrop_url'] = this.imageURL + element.backdrop_path                        
-                    }
                     if (element.poster_path) {
                         element['poster_url'] = this.imageURL + element.poster_path
                     }
@@ -64,9 +61,6 @@ export default {
             .get("https://api.themoviedb.org/3/search/movie?language=en-US&include_adult=false&query=" + this.$props.name + "&api_key=" + process.env.VUE_APP_TMDB_API_KEY + "&page=" + this.page)
             .then(res => {
                 res.data.results.forEach(element => {
-                    if (element.backdrop_path) {
-                        element['backdrop_url'] = this.imageURL + element.backdrop_path                        
-                    }
                     if (element.poster_path) {
                         element['poster_url'] = this.imageURL + element.poster_path
                     }
@@ -86,9 +80,6 @@ export default {
                     this.totalPages = res.data.total_pages;
                     this.totalResults = res.data.total_results;
                     res.data.results.forEach(element => {
-                        if (element.backdrop_path) {
-                            element['backdrop_url'] = this.imageURL + element.backdrop_path                        
-                        }
                         if (element.poster_path) {
                             element['poster_url'] = this.imageURL + element.poster_path
                         }
