@@ -1,7 +1,7 @@
 <template>
     <v-layout class="ma-8" justify-start row wrap>
         <v-flex xs6 sm4 md3 lg2 v-for="(movie, i) in movies" :key="i">
-            <router-link class="ml-2 pb-8 titre" :title="(movie.title || movie.original_title)" :to="{ name: 'Movie', params: { id: (movie.tmdb_id || movie.id) } }">
+            <router-link class="ml-2 pb-8 titre" :title="(movie.title || movie.original_title)" :to="{ name: 'Movie', params: { id: (movie.id) } }">
                 <v-card class="mb-2" raised width="187" color="grey lighten-1" image>
                     <v-img class="carte" v-if="movie.poster_url" :src="movie.poster_url" lazy-src="" height="275" cover>
                         <template v-slot:placeholder>
