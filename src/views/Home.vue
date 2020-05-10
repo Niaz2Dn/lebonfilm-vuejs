@@ -37,7 +37,7 @@ export default {
         return {
             featured: [],
             trendingMovies: [],
-            trendingMoviesUrl: "https://lebonfilm-prod.herokuapp.com/movie/trending"
+            trendingMoviesUrl: "https://lebonfilm-prod.herokuapp.com/movies?trending=true"
         };
     }
 }

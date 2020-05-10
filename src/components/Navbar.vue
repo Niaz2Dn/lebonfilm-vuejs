@@ -42,7 +42,7 @@ export default {
             username: "",
             searchTitle: "",
             isConnectedUrl: "https://lebonfilm-prod.herokuapp.com/isConnected",
-            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logoutUser"
+            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout"
         };
     },
     mounted() {
@@ -76,7 +76,7 @@ export default {
                             }
                         }
                     })
-                    .catch(() => {});
+                    .catch(() => {})
             }, 2000);
         },
         logout() {
@@ -92,11 +92,7 @@ export default {
                     });
                 }
             })
-            .catch((err) => {
-                if (err.response.status === 401) {
-                    console.log(err.response.data.error_message);
-                }
-            })
+            .catch(() => {})
         }
     }
 };

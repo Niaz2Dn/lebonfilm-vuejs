@@ -7,13 +7,13 @@
                         <span :title="movie.new_date" class="ml-2 mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
                     </v-card-title>
                     <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
-                        <!-- <div>budget : {{ movie.budget }}</div> -->
+                        <div>budget : {{ movie.budget }}</div>
                         <div>category : {{ movie.category }}</div>
-                        <!-- <div>homepage_url : {{ movie.homepage_url }}</div>
+                        <div>homepage_url : {{ movie.homepage_url }}</div>
                         <div>keywords : {{ movie.keywords }}</div>
                         <div>revenue : {{ movie.revenue }}</div>
                         <div>runtime : {{ movie.runtime }}</div>
-                        <div>status : {{ movie.status }}</div> -->
+                        <div>status : {{ movie.status }}</div>
                     </v-card-text>
                     <v-rating class="ml-4 op1" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
                     <v-card-actions>
@@ -77,9 +77,9 @@ export default {
             nbLikes: 0,
             recoMovies: [],
             details: false,
-            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movie/details",
-            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/movie/likes",
-            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/movie/comments"
+            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movies?",
+            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/likes?",
+            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?"
         };
     },
     filters: {
@@ -99,7 +99,7 @@ export default {
     props: ["id"],
     mounted() {
         this.details = false;
-        axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
+        axios.get(this.movieDetailsUrl+"id="+this.id)
         .then(res => {
             if (res.data.result) {
                 this.movie = res.data.result;
@@ -108,11 +108,7 @@ export default {
                 this.details = true;
             }
         })
-        .catch(err => {
-            if (err.response.status == 404 || err.response.status == 500) {
-                console.log(err.response.data.error_message)
-            }
-        });
+        .catch(() => {});
         this.getLikes();
         this.getComments();
         this.$root.$on('username', (res) => {this.username = res});
@@ -120,17 +116,13 @@ export default {
     updated() {
         if (this.details) {
             this.movie.recommendations.split(" ").forEach(m => {
-                axios.get(this.movieDetailsUrl+"?tmdb_id="+m)
+                axios.get(this.movieDetailsUrl+"?id="+m)
                 .then(res => {
                     if (res.data.result) {
                         this.recoMovies.push(res.data.result);
                     }
                 })
-                .catch(err => {
-                    if (err.response.status == 404 || err.response.status == 500) {
-                        console.log(err.response.data.error_message)
-                    }
-                });
+                .catch(() => {});
             })
             this.details = false;
         }
@@ -165,7 +157,7 @@ export default {
         getComments() {
                 axios({
                     method: 'GET',
-                    url: this.movieCommentsUrl + "?tmdb_id=" + this.id,
+                    url: this.movieCommentsUrl + "id=" + this.id,
                 })
                 .then(res => {
                     if(res.data.results) {
@@ -177,7 +169,7 @@ export default {
         getLikes() {
                 axios({
                     method: 'GET',
-                    url: this.movieLikeUrl + "?tmdb_id=" + this.id,
+                    url: this.movieLikeUrl + "?id=" + this.id,
                 })
                 .then(res => {
                     if(res.data.results) {
@@ -230,7 +222,7 @@ export default {
         },
         reload() {
             this.details = false;
-            axios.get(this.movieDetailsUrl+"?tmdb_id="+this.id)
+            axios.get(this.movieDetailsUrl+"?id="+this.id)
             .then(res => {
                 if (res.data.result) {
                     this.movie = res.data.result;
@@ -239,11 +231,7 @@ export default {
                     this.details = true;
                 }
             })
-            .catch(err => {
-                if (err.response.status == 404 || err.response.status == 500) {
-                    console.log(err.response.data.error_message)
-                }
-            });
+            .catch(() => {});
             this.getLikes();
             this.getComments();
             this.$root.$on('username', (res) => {this.username = res});
