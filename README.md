@@ -1,5 +1,8 @@
 # lebonfilm-vuejs
 
+Voici le lien de notre projet deploye sur heroku : https://lebonfilm.herokuapp.com
+
+
 ## Project setup
 ```
 npm install
@@ -7,7 +10,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run start
 ```
 
 ### Compiles and minifies for production
