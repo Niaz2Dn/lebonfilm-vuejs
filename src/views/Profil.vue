@@ -21,7 +21,7 @@
                     <v-card-text>
                         <v-form>
                             <v-textarea auto-grow dense counter="160" color="black" ref="profil_bio" v-model="form['profil_bio']" label="Bio" type="text" :rules="[rules.bio_length]"></v-textarea>
-                            <v-text-field color="black" ref="profil_image_url" v-model="form['profil_image_url']" label="Image" type="text" :rules="[]"></v-text-field>
+                            <v-text-field counter="500" color="black" ref="profil_image_url" v-model="form['profil_image_url']" label="Image" type="text" :rules="[rules.url_length, rules.url]"></v-text-field>
                             <v-text-field color="black" ref="email" v-model="form['email']" label="Email" type="text" :rules="[rules.email]"></v-text-field>
                             <v-text-field color="black" ref="password" v-model="form['password']" label="Password" type="password" :rules="[rules.required]"></v-text-field>
                         </v-form>
@@ -111,7 +111,8 @@ export default {
                 url: value => {
                     const pattern = /\.(jpeg|jpg|gif|png)$/;
                     return pattern.test(value) || "Invalid image url.";
-                }
+                },
+                url_length: () => !!this.form['profil_image_url'] && this.form['profil_image_url'].length <= 500 || 'Image url must be less than 500 characters',
             },
         };
     },
