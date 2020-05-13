@@ -49,7 +49,7 @@
                 <span v-else>Comments: </span>
             </div>
             <div class="comment-input ">
-                <v-text-area auto-grow dense counter="160" class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" :rules="[rules.required, rules.comment_length]" placeholder="Add a comment" color="light-blue"></v-text-area>
+                <v-textarea auto-grow dense counter="160" class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" :rules="[rules.required, rules.comment_length]" placeholder="Add a comment" color="light-blue"></v-textarea>
                 <v-btn @click="addComment" color="light-blue" class="white--text ma-4">
                     <div class="font-weight-black subtitle-1">Add a comment</div>
                 </v-btn>
