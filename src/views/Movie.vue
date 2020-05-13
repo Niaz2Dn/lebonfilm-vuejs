@@ -49,7 +49,7 @@
                 <span v-else>Comments: </span>
             </div>
             <div class="comment-input ">
-                <v-text-field class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" placeholder="Add a comment" color="light-blue" dense></v-text-field>
+                <v-text-area auto-grow dense counter="160" class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" :rules="[rules.required, rules.comment_length]" placeholder="Add a comment" color="light-blue" dense></v-text-area>
                 <v-btn @click="addComment" color="light-blue" class="white--text ma-4">
                     <div class="font-weight-black subtitle-1">Add a comment</div>
                 </v-btn>
@@ -86,7 +86,11 @@ export default {
             details: false,
             movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movies?",
             movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/likes?",
-            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?"
+            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?",
+            rules: {
+                required: value => !!value || "Required.",
+                comment_length: () => !!this.newComment && this.newComment.length <= 160 || 'Comment must be less than 160 characters',
+            },
         };
     },
     filters: {
@@ -150,7 +154,9 @@ export default {
             this.trailerLoaded = true;
         },
         addComment() {
-            if (this.newComment) {
+            if (!this.newComment) {
+                this.$refs["newComment"].validate(true);
+            } else {
                 axios({
                         method: 'POST',
                         url: this.movieCommentsUrl,
@@ -164,8 +170,8 @@ export default {
                         this.getComments();
                     })
                     .catch(() => {})
+                this.newComment = "";
             }
-            this.newComment = "";
         },
         getComments() {
             axios({

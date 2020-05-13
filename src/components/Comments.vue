@@ -23,7 +23,7 @@
 import moment from 'moment';
 
 export default {
-    name: 'MovieComments',
+    name: 'Comments',
     props: ['comments'],
     methods: {
         format_date(value) {
