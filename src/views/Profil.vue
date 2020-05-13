@@ -167,6 +167,10 @@ export default {
                     .then(res => {
                         this.success = true;
                         this.successMessage = res.data.message;
+                        this.$refs["password"].validate(false);
+                        this.$refs["email"].validate(false);
+                        this.$refs["profil_bio"].validate(false);
+                        this.$refs["profil_image_url"].validate(false);                       
                         this.reload();
                     })
                     .catch(err => {

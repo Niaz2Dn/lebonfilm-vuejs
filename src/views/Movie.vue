@@ -171,6 +171,7 @@ export default {
                     })
                     .catch(() => {})
                 this.newComment = "";
+                this.$refs["newComment"].validate(false);
             }
         },
         getComments() {
