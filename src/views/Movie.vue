@@ -171,7 +171,6 @@ export default {
                     })
                     .catch(() => {})
                 this.newComment = "";
-                this.errors.clear();
             }
         },
         getComments() {
