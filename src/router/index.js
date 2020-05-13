@@ -42,7 +42,8 @@ Vue.use(require('vue-moment'))
         {
             path: "/profil/:username",
             name: "Profil",
-            component: Profil
+            component: Profil,
+            props: true
         }
     ]
 

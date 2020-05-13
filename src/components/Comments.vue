@@ -2,8 +2,8 @@
     <div>
         <div class="comment" v-for="(comment, i) in comments" :key="i">
             <v-list-item>
-                <v-list-item-avatar v-if="comment.image">
-                    <v-img :src="comment.image" size="50"></v-img>
+                <v-list-item-avatar v-if="comment.profil_image_url">
+                    <v-img :src="comment.profil_image_url" size="50"></v-img>
                 </v-list-item-avatar>
                 <v-list-item-avatar v-else color="grey" size="50"></v-list-item-avatar>
                 <v-list-item-content class="mb-4">

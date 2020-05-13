@@ -1,21 +1,27 @@
 <template>
     <div class="movie">
-        <v-container :style="{ backgroundImage: 'url(' + movie.backdrop_url + ')' }" class="image pa-8" fluid pb-3>
-            <v-row align="start" justify="end" class="mr-8 pr-8">
-                <v-card class="pr-8 pt-4 mr-8 mt-8" width="600" color="transparent" outlined>
+        <v-container :style="{ backgroundImage: 'url(' + movie.backdrop_url + ')' }" class="image" fluid pb-3>
+            <v-row align="start" justify="end">
+                <v-card class="mx-auto" width="600" color="transparent" outlined>
                     <v-card-title :title="movie.original_title || movie.title" class="display-2 font-weight-black white--text">{{ (movie.original_title || movie.title) | truncate(movie.original_title || movie.title, 33, "...")}}
-                        <span :title="movie.new_date" class="ml-2 mb-8 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
+                        <span :title="movie.new_date" class="ml-2 mb-4 pd-8 body-1 font-weight-regular white--text">{{ movie.new_date }}</span>
                     </v-card-title>
-                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">{{ movie.overview | truncate(movie.overview, 250, "...") }}
-                        <div>budget : {{ movie.budget }}</div>
-                        <div>category : {{ movie.category }}</div>
-                        <div>homepage_url : {{ movie.homepage_url }}</div>
-                        <div>keywords : {{ movie.keywords }}</div>
-                        <div>revenue : {{ movie.revenue }}</div>
-                        <div>runtime : {{ movie.runtime }}</div>
-                        <div>status : {{ movie.status }}</div>
+                    <v-card-text class="body-1 font-weight-regular white--text" :title="movie.overview">
+                        <div :title="movie.category" class="font-weight-regular headline mb-4 white--text">{{ movie.category }}</div>
+                        {{ movie.overview | truncate(movie.overview, 250, "...") }}
+                        <div :title="movie.homepage_url" class="mt-2"><a class="font-weight-regular light-blue--text hidden-sm-and-down" v-bind:href=movie.homepage_url target="_blank" rel="noopener noreferrer">movie official page</a></div>
+                        <div class="ma-2 hidden-sm-and-down">
+                            <v-chip :title="key" class="ma-2" color="white" outlined v-for="(key, i) in movie.keys" :key="i">
+                                {{ key }}
+                            </v-chip>
+                        </div>
+                        <v-btn :title="movie.runtime" color="white" text>
+                            <v-icon left color="white">mdi-clock</v-icon>
+                            <span :title="movie.runtime" class="white--text">{{ movie.runtime }}</span>
+                        </v-btn>
+                        <div :title="movie.status">Status/{{ movie.status }}</div>
                     </v-card-text>
-                    <v-rating class="ml-4 op1" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
+                    <v-rating class="ml-4" :title="movie.new_rating + '/5'" v-model="movie.new_rating" color="amber" background-color="amber darken-2" empty-icon="$ratingFull" dense readonly></v-rating>
                     <v-card-actions>
                         <v-dialog @click:outside="resetTrailer" width="1080" overlay-opacity="0.2">
                             <template v-slot:activator="{ on }">
@@ -36,10 +42,6 @@
                 </v-card>
             </v-row>
         </v-container>
-        <div class="ma-4">
-            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">Recommendations</div>
-            <MovieGrid v-bind:movies="recoMovies"/>
-        </div>
         <div class="ma-4 comments mb-8 pb-8">
             <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">
                 <span v-if="this.movieComments.length !== 0">Comments: ({{ this.movieComments.length }})
@@ -53,6 +55,10 @@
                 </v-btn>
                 <Comments v-bind:comments="movieComments"></Comments>
             </div>
+        </div>
+        <div class="ma-4">
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">Recommendations</div>
+            <MovieGrid v-bind:movies="recoMovies"/>
         </div>
     </div>
 </template>
@@ -73,6 +79,7 @@ export default {
             username: "",
             movieComments: [],
             newComment: "",
+            usersUrl: "https://lebonfilm-prod.herokuapp.com/users?",
             isLiked: false,
             nbLikes: 0,
             recoMovies: [],
@@ -105,26 +112,32 @@ export default {
                 this.movie = res.data.result;
                 this.movie["new_date"] = this.movie.release_date.substring(0, 4);
                 this.movie["new_rating"] = (this.movie.vote_average * 5) / 10;
+                if (this.movie.keywords) {
+                    this.movie["keys"] = this.movie.keywords.split(' ');
+                }
                 this.details = true;
+                this.getLikes();
+                this.getComments();
             }
         })
         .catch(() => {});
-        this.getLikes();
-        this.getComments();
-        this.$root.$on('username', (res) => {this.username = res});
+        this.$root.$on('user', (res) => {this.username = res});
     },
     updated() {
         if (this.details) {
-            this.movie.recommendations.split(" ").forEach(m => {
-                axios.get(this.movieDetailsUrl+"?id="+m)
-                .then(res => {
-                    if (res.data.result) {
-                        this.recoMovies.push(res.data.result);
-                    }
+            this.recoMovies = [];
+            if (this.movie.recommendations) {
+                this.movie.recommendations.split(" ").forEach(m => {
+                    axios.get(this.movieDetailsUrl+"id="+m)
+                    .then(res => {
+                        if (res.data.result) {
+                            this.recoMovies.push(res.data.result);
+                        }
+                    })
+                    .catch(() => {});
                 })
-                .catch(() => {});
-            })
-            this.details = false;
+                this.details = false;
+            }
         }
     },
     computed: {
@@ -134,7 +147,7 @@ export default {
     },
     methods: {
         trailer() {
-          this.trailerLoaded = true;
+            this.trailerLoaded = true;
         },
         addComment() {
             if (this.newComment) {
@@ -155,35 +168,34 @@ export default {
             this.newComment = "";
         },
         getComments() {
-                axios({
-                    method: 'GET',
-                    url: this.movieCommentsUrl + "id=" + this.id,
-                })
-                .then(res => {
-                    if(res.data.results) {
-                        this.movieComments = res.data.results
-                    }
-                })
-                .catch(() => {})
+            axios({
+                method: 'GET',
+                url: this.movieCommentsUrl + "id=" + this.id,
+            })
+            .then(res => {
+                if(res.data.results) {
+                    this.movieComments = res.data.results
+                }
+            })
+            .catch(() => {})
         },
         getLikes() {
-                axios({
-                    method: 'GET',
-                    url: this.movieLikeUrl + "?id=" + this.id,
-                })
-                .then(res => {
-                    if(res.data.results) {
-                        this.nbLikes = res.data.results.length
-                        this.isLiked = false
-                        res.data.results.forEach(element => {
-                            if (element === this.username) {
-                                this.isLiked = true
-                            }
-                        });
-                    }
-                })
-                .catch(() => {
-                })
+            axios({
+                method: 'GET',
+                url: this.movieLikeUrl + "id=" + this.id,
+            })
+            .then(res => {
+                if(res.data.results) {
+                    this.nbLikes = res.data.results.length
+                    this.isLiked = false
+                    res.data.results.forEach(element => {
+                        if (element === this.username) {
+                            this.isLiked = true
+                        }
+                    });
+                }
+            })
+            .catch(() => {})
         },
         like() {
             if (!this.isLiked) {
@@ -198,8 +210,7 @@ export default {
                 .then(() => {
                     this.getLikes();
                 })
-                .catch(() => {
-                })
+                .catch(() => {})
             } else {
                 axios({
                     method: 'DELETE',
@@ -212,8 +223,7 @@ export default {
                 .then(() => {
                     this.getLikes();
                 })
-                .catch(() => {
-                })
+                .catch(() => {})
             }
             
         },
@@ -222,7 +232,7 @@ export default {
         },
         reload() {
             this.details = false;
-            axios.get(this.movieDetailsUrl+"?id="+this.id)
+            axios.get(this.movieDetailsUrl+"id="+this.id)
             .then(res => {
                 if (res.data.result) {
                     this.movie = res.data.result;
@@ -234,7 +244,6 @@ export default {
             .catch(() => {});
             this.getLikes();
             this.getComments();
-            this.$root.$on('username', (res) => {this.username = res});
         }
     },
     watch: {

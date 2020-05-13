@@ -17,7 +17,7 @@
                 <v-toolbar-title class="uline ma-2 font-weight-medium subtitle-1">{{ username }}</v-toolbar-title>
             </div>
             <div v-else>
-                <v-toolbar-title class="ma-2 font-weight-medium subtitle-1">
+                <v-toolbar-title v-if="this.username" class="ma-2 font-weight-medium subtitle-1">
                 <router-link class="rt" :to="{name: 'Profil', params: { username: this.username }}">{{ username }}</router-link>
                 </v-toolbar-title>
             </div>
@@ -58,26 +58,31 @@ export default {
             }
         },
         isConnected() {
-            setInterval(() => {
-                    axios({
-                        method: 'GET',
-                        url: this.isConnectedUrl,
-                        withCredentials: true
-                    })
-                    .then(res => {
-                        if (res.data.result) {
-                            this.$root.$emit('username', res.data.result.username);
-                            this.username = res.data.result.username
-                        } else {
-                            if (this.$route.name === 'Movie' || this.$route.name === 'Home' || this.$route.name === 'Search' || this.$route.name === 'Profil') {
-                                this.$router.push({
-                                    name: "Login"
-                                });
-                            }
-                        }
-                    })
-                    .catch(() => {})
-            }, 2000);
+            axios({
+                method: 'GET',
+                url: this.isConnectedUrl,
+                withCredentials: true
+            })
+            .then(res => {
+                if (res.data.result) {
+                    console.log("connecte")
+                    this.username = res.data.result.username
+                    this.$root.$emit('user', this.username)
+                    if (this.$route.name === 'Login' || this.$route.name === 'Register') {
+                        this.$router.push({
+                            name: "Home"
+                        });
+                    }
+                } else {
+                    console.log("pas connecte");
+                    if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
+                        this.$router.push({
+                            name: "Login"
+                        });
+                    }
+                }
+            })
+            .catch(() => {})
         },
         logout() {
             axios({
@@ -93,6 +98,19 @@ export default {
                 }
             })
             .catch(() => {})
+        }
+    },
+    computed: {
+        getFullPath() {
+            return this.$route.path
+        }
+    },
+    watch: {
+        getFullPath() {
+            this.isConnected();
+        },
+        username(newUsername) {
+            this.username = newUsername
         }
     }
 };

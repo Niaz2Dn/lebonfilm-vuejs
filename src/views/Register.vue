@@ -85,7 +85,7 @@ export default {
                 .then(res => {
                     this.success = true;
                     this.successMessage = res.data.message;
-                    setTimeout(() => this.$router.push("/login"), 3000);
+                    setTimeout(() => this.$router.push("/login"), 2000);
                 })
                 .catch(err => {
                     if (err.response.status == 400) {
@@ -94,7 +94,7 @@ export default {
                     }
                 })
             }
-            setTimeout(() => {this.error = false;}, 6000);
+            setTimeout(() => {this.error = false;}, 2000);
         }
     }
 };

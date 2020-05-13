@@ -77,7 +77,7 @@ export default {
                     }
                 })
             }
-            setTimeout(() => {this.error = false;}, 6000);
+            setTimeout(() => {this.error = false;}, 2000);
         }
     }
 };
