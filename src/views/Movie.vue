@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="ma-4">
-            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">Recommendations</div>
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">Recommendations</div>
             <MovieGrid v-bind:movies="recoMovies"/>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="search-result">
         <div class="ma-4 pb-8">
-            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">
                 <span v-if="this.searchResults.length !== 0">Search Results: ({{ this.totalResults }})</span>
                 <span v-else>Search Results:</span>
             </div>
@@ -11,7 +11,7 @@
             </v-btn>
         </div>
         <div v-if="noData && this.name">
-            <h4 class="mt-8 mb-2 grey--text text--lighten-1">No result found.</h4>
+            <h4 class="mt-8 mb-2 grey--text">No result found.</h4>
         </div>
   </div>
 </template>

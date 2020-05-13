@@ -65,7 +65,7 @@
                 </v-layout>
             </v-container>
                    <div class="ma-4">
-            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text text--lighten-1">Liked Movies</div>
+            <div class="mt-8 mb-2 display-1 font-weight-medium grey--text">Liked Movies</div>
             <MovieGrid v-bind:movies="likedMovies"/>
         </div>
         </div>
