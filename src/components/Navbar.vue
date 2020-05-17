@@ -2,7 +2,7 @@
     <div class="nav">
         <v-app-bar app color="white" v-if="this.$route.name !== 'Login' && this.$route.name !== 'Register'">
             <span class="pt-4 pb-2">
-                <img width="130" src="@/assets/logo.png"/>
+                <img @click="drawer = !drawer" width="130" src="@/assets/logo.png"/>
             </span>
             <v-spacer></v-spacer>
             <div v-if="this.$route.name === 'Home'">
@@ -27,6 +27,21 @@
                 <v-icon>mdi-exit-to-app</v-icon>
             </v-btn>
         </v-app-bar>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
+            <div class="text-center grey--text font-weight-medium">Users</div>
+            <v-divider></v-divider>
+            <v-list>
+            <v-list-item v-for="user in users" :key="user">
+                <v-list-item-content>
+                    <router-link class="titre" :title="user" :to="{name: 'Profil', params: { username: user }}">
+                        <v-list-item-title class="font-weight-medium">{{ user }}</v-list-item-title>
+                    </router-link>
+                </v-list-item-content>
+            </v-list-item>
+
+            </v-list>
+
+        </v-navigation-drawer>
         <v-footer absolute padless class="font-weight-medium" color="transparent">
             <v-col class="text-center grey--text" cols="12"><strong>&copy; 2020 Master STL #PC3R </strong>Project by Mohamed Nizamuddin & Skander Sersi</v-col>
         </v-footer>
@@ -40,13 +55,20 @@ export default {
     data() {
         return {
             username: "",
+            drawer: false,
             searchTitle: "",
             isConnectedUrl: "https://lebonfilm-prod.herokuapp.com/isConnected",
-            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout"
+            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout",
+            usersUrl: "https://lebonfilm-prod.herokuapp.com/users",
+            users: []
         };
     },
     mounted() {
         this.isConnected();
+        this.getUsers();
+    },
+    updated() {
+        this.getUsers();
     },
     methods: {
         search() {
@@ -84,6 +106,18 @@ export default {
             })
             .catch(() => {})
         },
+        getUsers() {
+            axios({
+                method: 'GET',
+                url: this.usersUrl
+            })
+            .then(res => {
+                if(res.data.results) {
+                    this.users = res.data.results
+                }
+            })
+            .catch(() => {})
+        },
         logout() {
             axios({
                 method: 'GET',
@@ -108,6 +142,7 @@ export default {
     watch: {
         getFullPath() {
             this.isConnected();
+            this.getUsers();
         },
         username(newUsername) {
             this.username = newUsername
@@ -131,5 +166,17 @@ export default {
 }
 .uline {
     box-shadow: inset 0 -3px 0 0 #03a9f4;
+}
+.titre:hover {
+    color: #03a9f4;
+}
+.titre {
+    color: black;
+    width: 163px;
+    display: block;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 </style>
