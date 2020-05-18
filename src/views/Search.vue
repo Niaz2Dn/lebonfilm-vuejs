@@ -78,7 +78,7 @@ export default {
     },
     name: "Search",
     watch: {
-        name(value) {
+        name() {
             // le composant navbar nous dirige vers la vue Search lorsqu'on fait une recherche dans une page differente de la page de resultats de recherche,
             // lorsque le composant est monte les resultats sont recuperer est afficher.
             // Or si on veut refaire une recherche juste apres, il ne se passera rien car le composant est deja monte
