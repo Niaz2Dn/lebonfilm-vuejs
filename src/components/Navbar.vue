@@ -54,16 +54,17 @@ import axios from "axios"
 export default {
     data() {
         return {
-            username: "",
-            drawer: false,
-            searchTitle: "",
-            isConnectedUrl: "https://lebonfilm-prod.herokuapp.com/isConnected",
-            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout",
-            usersUrl: "https://lebonfilm-prod.herokuapp.com/users",
-            users: []
+            username: "", // nom de l'utilisateur connecte
+            drawer: false, // indique si on affiche la partie a gauche qui affiche la liste des utilisateurs inscrit
+            searchTitle: "", // titre de film a rechercher
+            isConnectedUrl: "https://lebonfilm-prod.herokuapp.com/isConnected", // url pour savoir si on est connecte
+            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout", // url pour se deconnecter
+            usersUrl: "https://lebonfilm-prod.herokuapp.com/users", // url pour avoir la liste des utilisateurs inscrits
+            users: [] // liste des utilisateurs inscrits
         };
     },
     mounted() {
+        // on teste si on est connecte et on recuperer la liste des utilisateurs
         this.isConnected();
         this.getUsers();
     },
@@ -72,6 +73,7 @@ export default {
     },
     methods: {
         search() {
+            // pour faire une recherche est etre redirige vers la page de resultat de recherche
             if ( this.searchTitle && this.searchTitle !== this.$route.params.name) {
                 this.$router.push({
                     path: "/search/" + this.searchTitle
@@ -87,9 +89,10 @@ export default {
             })
             .then(res => {
                 if (res.data.result) {
-                    console.log("connecte")
+                    // si connecte on envoi un event a root pour que dans la page de profile on puisse recuperer le pseudo sans refaire de requete au serveur
                     this.username = res.data.result.username
                     this.$root.$emit('user', this.username)
+                    //redirection vers la page d'accueil si on est deja connecte et qu'on essaie d'acceder a la page de login ou la page d'inscription
                     if (this.$route.name === 'Login' || this.$route.name === 'Register') {
                         this.$router.push({
                             name: "Home"
@@ -97,6 +100,7 @@ export default {
                     }
                 } else {
                     console.log("pas connecte");
+                    // redirection  vers la page de login si on est pas connecte est que l'on est dans une page du site autre que la page de login ou la page d'inscription
                     if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
                         this.$router.push({
                             name: "Login"
@@ -106,7 +110,7 @@ export default {
             })
             .catch(() => {})
         },
-        getUsers() {
+        getUsers() { // recupere tous les utilisateurs inscrits sur l'application Web
             axios({
                 method: 'GET',
                 url: this.usersUrl
@@ -125,6 +129,7 @@ export default {
                 withCredentials: true
             })
             .then(res => {
+                //redirige vers la page de connexion
                 if (res.data.message) {
                     this.$router.push({
                         name: "Login"
@@ -140,7 +145,7 @@ export default {
         }
     },
     watch: {
-        getFullPath() {
+        getFullPath() { //si changement d'url on reteste si on est connecte et on recupere la liste des users
             this.isConnected();
             this.getUsers();
         },

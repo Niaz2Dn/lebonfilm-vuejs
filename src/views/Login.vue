@@ -39,19 +39,23 @@ import axios from "axios";
 export default {
     data: function() {
         return {
-            form: {},
+            form: {}, //objet representant le formulaire
+
+            // pour les messages d'erreurs
             errorMessage: "",
             error: false,
-            rules: {
+
+            rules: { //regle a verifier avant de pouvoir se connecter
                 required: value => !!value || "Required."
             },
-            loginUserUrl: "https://lebonfilm-prod.herokuapp.com/login"
+            loginUserUrl: "https://lebonfilm-prod.herokuapp.com/login" //l'url pour se connecter en faisant un POST
         };
     },
     methods: {
         login() {
             this.error = false;
             this.errorMessage = "";
+            //Si un des champs n'est pas renseigne on ne peut pas se connecter
             if (!(this.form["username"] && this.form["password"])) {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
@@ -63,9 +67,10 @@ export default {
                         username: this.form["username"],
                         password: this.form["password"]
                     },
-                    withCredentials: true
+                    withCredentials: true // car requete CORS necessaire pour la session
                 })
                 .then(() => {
+                    //redirection vers la page d'accueil en cas de connexion reussi
                     this.$router.push({
                         name: "Home"
                     });

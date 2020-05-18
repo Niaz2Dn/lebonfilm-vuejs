@@ -24,9 +24,9 @@ import moment from 'moment';
 
 export default {
     name: 'Comments',
-    props: ['comments'],
+    props: ['comments'], // les commentaires que l'on recupere
     methods: {
-        format_date(value) {
+        format_date(value) { // formattage de la date
             if(value) {
                 return moment.utc(String(value)).utcOffset('+02:00').format('MMMM Do YYYY, h:mm:ss a')
             }

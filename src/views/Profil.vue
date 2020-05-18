@@ -8,7 +8,6 @@
                             <v-list-item-content>
                                 <v-list-item-title class="headline mb-1">{{ user.username }}</v-list-item-title>
                                 <v-list-item-subtitle>{{ user.profil_bio }}<div>{{ user.email }}</div></v-list-item-subtitle>
-
                             </v-list-item-content>
                             <v-list-item-avatar v-if="user.profil_image_url" size="100">
                                 <v-img :src="user.profil_image_url"></v-img>
@@ -82,28 +81,34 @@ export default {
     name: "Profil",
     data: function() {
         return {
-            likedMovies: [],
-            likedMoviesDetails: [],
-            userExist: false,
-            user: null,
-            name: "",
-            deletePassword: "",
-            movieComments: [],
-            usersUrl: "https://lebonfilm-prod.herokuapp.com/users",
-            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movies?",
-            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/likes?",
-            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?",
-            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout",
-            form: {},
+            likedMovies: [], // les films que l'utilisateurs a liker
+            userExist: false, // indique si le pseudo indique dans le chemin de l'url existe ou pas
+            user: null, // l'utilisateur connecte
+            name: "", // le nom de l'utilisateur dans le chemin de l'url
+            deletePassword: "", // password pour confirmer que c'est bien le bon utilisateur qui veut modifier les informations
+            movieComments: [], // les commentaires de l'utilisateurs
+            usersUrl: "https://lebonfilm-prod.herokuapp.com/users", //pour les users
+            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movies?", //pour les films
+            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/likes?", //pour les likes
+            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?", //pour les commentaires
+            logoutUrl: "https://lebonfilm-prod.herokuapp.com/logout", //pour se deconnecter
+            form: {}, // formulaire
+
+            //messsage d'erreur pour la suppression du compte
             deleteErrorMessage: "",
             deleteError: false,
+            
+            //message en cas d'erreur pour la maj du profil
             errorMessage: "",
             error: false,
+
+            //message en cas de succes pour la maj du profil
             successMessage: "",
             success: false,
-            rules: {
+            
+            rules: { //regle a valider pour supprimer son compte ou mettre a jour son profil
                 required: value => !!value || "Required.",
-                bio_length: () => !!this.form['profil_bio'] && this.form['profil_bio'].length <= 160 || 'Bio must be less than 160 characters',
+                bio_length: () => !!this.form['profil_bio'] && this.form['profil_bio'].length <= 280 || 'Bio must be less than 280 characters',
                 email: value => {
                     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     return pattern.test(value) || "Invalid e-mail.";
@@ -122,6 +127,10 @@ export default {
     },
     props: ["username"],
     mounted() {
+        //quand la page de profil est charge on fais la requete au serveur pour recuperer les utilisateurs inscrits si le pseudo renseigne
+        //n'existe pas dans cette liste alors l'utilisateur n'existe pas
+        //dans le cas contraire on va chercher les infos de l'utilisateur
+        //les commentaires que l'utilisateur a laisser ainsi que la les films que l'utilisateur a liker
         axios.get(this.usersUrl)
         .then(res => {
             if (res.data.results) {
@@ -144,6 +153,9 @@ export default {
         }
     },
     methods: {
+        //pour mettre a jour l'email, la photo de profil et la bio
+        //si lors de la mis a jour l'email, la photo de profil ou la bio est vide alors on garde les anciennes informations
+        //on a decider de faire comme ceci pour pouvoir mettre a jour des infos de facon selective.
         update() {
             this.error = false;
             this.errorMessage = "";
@@ -182,6 +194,7 @@ export default {
             }
             setTimeout(() => {this.error = false;}, 2000);
         },
+        //pour supprimer le compte
         deleteAcc() {
             this.deleteError = false;
             this.deleteErrorMessage = "";

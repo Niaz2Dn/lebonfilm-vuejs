@@ -25,7 +25,7 @@ export default {
     name: 'MovieCarousel',
     props: ['movies'],
     filters: {
-        truncate: function(text, length, suffix) {
+        truncate: function(text, length, suffix) { // methode pour tronquer les titres de film trop long
             if (text && text.length > length) {
                 return text.substring(0, length) + suffix;
             } else {

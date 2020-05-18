@@ -43,19 +43,24 @@ import axios from "axios";
 export default {
     data: function() {
         return {
-            form: {},
+            form: {}, //objet representant le formulaire
+
+            // pour les messages d'erreurs
             errorMessage: "",
             error: false,
+            
+            //pour les messages si succes
             successMessage: "",
-            success: false,
-            rules: {
+            success: false, 
+            
+            rules: { //regle a verifier avant de pouvoir s'inscrire
                 required: value => !!value || "Required.",
                 email: value => {
                     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     return pattern.test(value) || "Invalid e-mail.";
                 }
             },
-            newUserUrl: "https://lebonfilm-prod.herokuapp.com/users"
+            newUserUrl: "https://lebonfilm-prod.herokuapp.com/users" //l'url pour s'inscrire en faisant un POST
         };
     },
     methods: {
@@ -64,6 +69,7 @@ export default {
             this.errorMessage = "";
             this.success = false;
             this.successMessage = "";
+            //Si un des champs n'est pas renseigne on ne peut pas s'inscrire
             if (!(this.form["username"] && this.form["password"] && this.form["lastname"] && this.form["firstname"] && this.form["email"])) {
                 this.$refs["username"].validate(true);
                 this.$refs["password"].validate(true);
@@ -85,15 +91,18 @@ export default {
                 .then(res => {
                     this.success = true;
                     this.successMessage = res.data.message;
+                    //redirection si succes
                     setTimeout(() => this.$router.push("/login"), 2000);
                 })
                 .catch(err => {
+                    //message d'erreur si erreur
                     if (err.response.status == 400) {
                         this.error = true
                         this.errorMessage = err.response.data.error
                     }
                 })
             }
+            //on enleve les messages d'erreurs
             setTimeout(() => {this.error = false;}, 2000);
         }
     }

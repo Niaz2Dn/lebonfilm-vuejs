@@ -16,8 +16,8 @@ import MovieGrid from "@/components/MovieGrid"
 export default {
     name: 'Home',
     components: {
-        MovieCarousel,
-        MovieGrid
+        MovieCarousel, // Composant pour les films mis en avant
+        MovieGrid // Composant pour les autres films tendance
     },
     mounted() {
         axios
@@ -35,9 +35,9 @@ export default {
     },
     data() {
         return {
-            featured: [],
-            trendingMovies: [],
-            trendingMoviesUrl: "https://lebonfilm-prod.herokuapp.com/movies?trending=true"
+            featured: [], // liste pour les films mis en avant
+            trendingMovies: [], // liste pour les autres films tendance
+            trendingMoviesUrl: "https://lebonfilm-prod.herokuapp.com/movies?trending=true" //l'url pour recuperer les films tendance
         };
     }
 }

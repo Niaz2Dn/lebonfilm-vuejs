@@ -28,7 +28,7 @@
 
 export default {
     name: 'MovieGrid',
-    props: ['movies']
+    props: ['movies'] // les films que l'on recupere
 }
 </script>
 

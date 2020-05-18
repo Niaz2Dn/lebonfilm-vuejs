@@ -49,7 +49,7 @@
                 <span v-else>Comments: </span>
             </div>
             <div class="comment-input ">
-                <v-textarea auto-grow dense counter="160" class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" :rules="[rules.required, rules.comment_length]" placeholder="Add a comment" color="light-blue"></v-textarea>
+                <v-textarea auto-grow dense counter="280" class="ma-4" ref="newComment" v-model="newComment" prepend-icon="mdi-comment" :rules="[rules.comment_length]" placeholder="Add a comment" color="light-blue"></v-textarea>
                 <v-btn @click="addComment" color="light-blue" class="white--text ma-4">
                     <div class="font-weight-black subtitle-1">Add a comment</div>
                 </v-btn>
@@ -74,22 +74,20 @@ export default {
     name: "Home",
     data: function() {
         return {
-            movie: "",
-            trailerLoaded: false,
-            username: "",
-            movieComments: [],
-            newComment: "",
-            usersUrl: "https://lebonfilm-prod.herokuapp.com/users?",
-            isLiked: false,
-            nbLikes: 0,
-            recoMovies: [],
-            details: false,
-            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movies?",
-            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/likes?",
-            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?",
-            rules: {
-                required: value => !!value || "Required.",
-                comment_length: () => !!this.newComment && this.newComment.length <= 160 || 'Comment must be less than 160 characters',
+            movie: "", // l'id du film de la page
+            trailerLoaded: false, // indique si la bande d'annonce est visionne ou pas
+            username: "", // pseudo de l'utilisateur connecte
+            movieComments: [], // commentaires du films
+            newComment: "", // nouveau commentaire a ajouter
+            isLiked: false, // indique si l'utilisateur connecte a like le film ou pas
+            nbLikes: 0, // le nombre de likes total que le film a obtenu
+            recoMovies: [], // la liste des films recommendees
+            details: false, // pour savoir si on a recuperer les details du film de la page
+            movieDetailsUrl: "https://lebonfilm-prod.herokuapp.com/movies?", // url pour les requetes sur les films
+            movieLikeUrl: "https://lebonfilm-prod.herokuapp.com/likes?", // url pour les requetes sur les likes
+            movieCommentsUrl: "https://lebonfilm-prod.herokuapp.com/comments?", // url pour les requetes sur les commentaires
+            rules: { //regle pour ajouter un commentaire
+                comment_length: () => !!this.newComment && this.newComment.length <= 280 || 'Comment must be less than 280 characters',
             },
         };
     },
@@ -103,12 +101,13 @@ export default {
         }
     },
     components: {
-        LazyYoutubeVideo,
-        Comments,
-        MovieGrid
+        LazyYoutubeVideo, //Composant pour afficher la video youtube de bande d'annonce du film
+        Comments, //Composant pour afficher la liste de commentaires
+        MovieGrid //Composant pour les films likes par l'utilisateur connecte
     },
-    props: ["id"],
+    props: ["id"], // id du film
     mounted() {
+        //On recupere les details du films
         this.details = false;
         axios.get(this.movieDetailsUrl+"id="+this.id)
         .then(res => {
@@ -120,14 +119,18 @@ export default {
                     this.movie["keys"] = this.movie.keywords.split(' ');
                 }
                 this.details = true;
+                //et on recupere les likes et commentaires associés au film
                 this.getLikes();
                 this.getComments();
             }
         })
         .catch(() => {});
+        //on recupere le pseudo de l'utilisateur connecte avec l'event envoyer par navbar
         this.$root.$on('user', (res) => {this.username = res});
     },
     updated() {
+        //Une fois que l'on a les details, il faut recuperer le poster de chaque film recommandees
+        //pour ça il faut parcourir la liste des films recommandees (des ids) et faire une recuperer les details pour chaque films
         if (this.details) {
             this.recoMovies = [];
             if (this.movie.recommendations) {
@@ -153,10 +156,8 @@ export default {
         trailer() {
             this.trailerLoaded = true;
         },
-        addComment() {
-            if (!this.newComment) {
-                this.$refs["newComment"].validate(true);
-            } else {
+        addComment() { // pour ajouter un commentaire
+            if (this.newComment) {
                 axios({
                         method: 'POST',
                         url: this.movieCommentsUrl,
@@ -173,7 +174,7 @@ export default {
                 this.newComment = "";
             }
         },
-        getComments() {
+        getComments() { // recupere les commentaires
             axios({
                 method: 'GET',
                 url: this.movieCommentsUrl + "id=" + this.id,
@@ -185,7 +186,7 @@ export default {
             })
             .catch(() => {})
         },
-        getLikes() {
+        getLikes() { // recupere les likes
             axios({
                 method: 'GET',
                 url: this.movieLikeUrl + "id=" + this.id,
@@ -203,7 +204,7 @@ export default {
             })
             .catch(() => {})
         },
-        like() {
+        like() { // on like le film (requete POST) si on ne l'a pas deja liker sinon on retire le like (requete DELETE)
             if (!this.isLiked) {
                 axios({
                     method: 'POST',
@@ -237,6 +238,7 @@ export default {
             this.trailerLoaded = false;
         },
         reload() {
+            //pour mettre a jour la page du film visite quand on navigue en cliquant sur un film puis un films des films recommendees et ainsi de suite
             this.details = false;
             axios.get(this.movieDetailsUrl+"id="+this.id)
             .then(res => {
